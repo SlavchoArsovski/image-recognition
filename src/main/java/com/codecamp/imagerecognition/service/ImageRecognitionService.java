@@ -1,6 +1,12 @@
 package com.codecamp.imagerecognition.service;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,10 +21,12 @@ import java.util.regex.Pattern;
  * Created by sarsovsk on 15.10.2016.
  */
 @Service
-public class ImageRecognitionService {
+public class ImageRecognitionService implements ApplicationContextAware {
 
     @Value("${imageRecognition.imagesFolderPath}")
     private String imagesFolderPath;
+
+    private ApplicationContext applicationContext;
 
     public String storeImage(MultipartFile file) {
 
@@ -26,7 +34,7 @@ public class ImageRecognitionService {
         String imageType = getImageType(file);
 
         try {
-            File destination = new File(String.format("%stest.%s", imagesFolderPath, imageType));
+            File destination = new File(String.format("%simageRecognised.%s", imagesFolderPath, imageType));
             BufferedImage src = ImageIO.read(file.getInputStream());
             ImageIO.write(src, imageType, destination);
 
@@ -52,5 +60,39 @@ public class ImageRecognitionService {
         }
 
         return matcher.group(1);
+    }
+
+    public String getStoredImage() {
+
+        String imagePath =
+                String.format(
+                        "file:%simageRecognised.%s",
+                        imagesFolderPath,
+                        "jpeg");
+
+        byte[] byteArray;
+
+        try {
+            Resource resource = applicationContext.getResource(imagePath);
+            byteArray = IOUtils.toByteArray(resource.getInputStream());
+        } catch (IOException e) {
+            byteArray = getFallbackImage();
+        }
+
+        return Base64.encode(byteArray);
+    }
+
+    private byte[] getFallbackImage() {
+        Resource resource = applicationContext.getResource("classpath:nophoto.jpeg");
+        try {
+            return IOUtils.toByteArray(resource.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException("failed to load fallback image");
+        }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

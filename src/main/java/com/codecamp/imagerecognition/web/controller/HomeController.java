@@ -1,8 +1,10 @@
 package com.codecamp.imagerecognition.web.controller;
 
 import com.codecamp.imagerecognition.service.ImageRecognitionService;
+import com.codecamp.imagerecognition.web.model.ImageViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +29,6 @@ import java.util.regex.Pattern;
 public class HomeController {
 
     public static final String HOME_VIEW_NAME = "home";
-    public static final String VIEW_BEAN = "viewBean";
 
     @Autowired
     private ImageRecognitionService imageRecognitionService;
@@ -51,5 +53,17 @@ public class HomeController {
     @ResponseBody
     public String uploadImage(@RequestParam(name= "image") MultipartFile file) {
         return imageRecognitionService.storeImage(file);
+    }
+
+    @RequestMapping(value = "/getImage", method = RequestMethod.GET)
+    @ResponseBody
+    public ImageViewModel getImage() {
+
+        String imageDataEncoded = imageRecognitionService.getStoredImage();
+
+        ImageViewModel viewModel = new ImageViewModel();
+        viewModel.setData(imageDataEncoded);
+
+        return viewModel;
     }
 }
