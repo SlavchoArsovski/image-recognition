@@ -1,5 +1,7 @@
 package com.codecamp.imagerecognition.web.controller;
 
+import com.codecamp.imagerecognition.service.ImageRecognitionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -7,8 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Controller for home page.
@@ -18,8 +26,10 @@ import java.io.Writer;
 public class HomeController {
 
     public static final String HOME_VIEW_NAME = "home";
-
     public static final String VIEW_BEAN = "viewBean";
+
+    @Autowired
+    private ImageRecognitionService imageRecognitionService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -38,9 +48,8 @@ public class HomeController {
     }
 
     @RequestMapping(value="/upload", method = RequestMethod.POST)
-    public String uploadImage(@RequestParam(name= "file") MultipartFile file) {
-
-        System.out.println("image emptiness " + file.isEmpty());
-        return HOME_VIEW_NAME;
+    @ResponseBody
+    public String uploadImage(@RequestParam(name= "image") MultipartFile file) {
+        return imageRecognitionService.storeImage(file);
     }
 }
