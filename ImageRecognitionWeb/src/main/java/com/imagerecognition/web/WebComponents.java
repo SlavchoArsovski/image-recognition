@@ -1,4 +1,4 @@
-package com.codecamp.imagerecognition.web;
+package com.imagerecognition.web;
 
 /**
  * Marker interface used for component scanning.

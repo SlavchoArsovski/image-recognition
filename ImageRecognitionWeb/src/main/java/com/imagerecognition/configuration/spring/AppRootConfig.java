@@ -1,6 +1,7 @@
-package com.codecamp.imagerecognition.configuration.spring;
+package com.imagerecognition.configuration.spring;
 
-import com.codecamp.imagerecognition.service.ServiceComponents;
+import com.imagerecognition.service.ServiceComponents;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.ApplicationContext;

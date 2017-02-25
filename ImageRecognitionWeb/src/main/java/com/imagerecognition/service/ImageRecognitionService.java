@@ -1,4 +1,4 @@
-package com.codecamp.imagerecognition.service;
+package com.imagerecognition.service;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;

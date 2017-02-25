@@ -1,4 +1,4 @@
-package com.codecamp.imagerecognition.configuration.spring;
+package com.imagerecognition.configuration.spring;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

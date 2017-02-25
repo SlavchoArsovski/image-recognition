@@ -1,7 +1,7 @@
-package com.codecamp.imagerecognition.web.controller;
+package com.imagerecognition.web.controller;
 
-import com.codecamp.imagerecognition.service.ImageRecognitionService;
-import com.codecamp.imagerecognition.web.model.ImageViewModel;
+import com.imagerecognition.service.ImageRecognitionService;
+import com.imagerecognition.web.model.ImageViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;

@@ -1,4 +1,4 @@
-package com.codecamp.imagerecognition.web.model;
+package com.imagerecognition.web.model;
 
 /**
  * Created by sarsovsk on 15.10.2016.
