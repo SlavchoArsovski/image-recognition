@@ -1,7 +1,7 @@
-package com.imagerecognition.service;
+package com.motiondetection.service;
 
-import com.imagerecognition.enumaration.UploadStatus;
-import com.imagerecognition.service.dto.StoredImagesDto;
+import com.motiondetection.enumaration.UploadStatus;
+import com.motiondetection.service.dto.StoredImagesDto;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import org.apache.commons.io.IOUtils;

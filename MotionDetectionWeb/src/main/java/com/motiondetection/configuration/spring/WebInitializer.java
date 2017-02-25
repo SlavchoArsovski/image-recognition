@@ -1,4 +1,4 @@
-package com.imagerecognition.configuration.spring;
+package com.motiondetection.configuration.spring;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

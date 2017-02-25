@@ -1,4 +1,4 @@
-package com.imagerecognition.web;
+package com.motiondetection.web;
 
 /**
  * Marker interface used for component scanning.

@@ -1,4 +1,4 @@
-package com.imagerecognition.service;
+package com.motiondetection.service;
 
 import java.io.File;
 import java.util.Comparator;

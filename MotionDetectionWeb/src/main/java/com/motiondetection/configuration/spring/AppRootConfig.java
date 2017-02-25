@@ -1,6 +1,6 @@
-package com.imagerecognition.configuration.spring;
+package com.motiondetection.configuration.spring;
 
-import com.imagerecognition.service.ServiceComponents;
+import com.motiondetection.service.ServiceComponents;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;

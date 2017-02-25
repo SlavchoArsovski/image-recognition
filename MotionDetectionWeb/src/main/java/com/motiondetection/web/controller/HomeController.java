@@ -1,4 +1,4 @@
-package com.imagerecognition.web.controller;
+package com.motiondetection.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
-import com.imagerecognition.enumaration.UploadStatus;
-import com.imagerecognition.service.ImageRecognitionServiceImpl;
-import com.imagerecognition.service.dto.StoredImagesDto;
+import com.motiondetection.enumaration.UploadStatus;
+import com.motiondetection.service.ImageRecognitionServiceImpl;
+import com.motiondetection.service.dto.StoredImagesDto;
 
 /**
  * Controller for home page.

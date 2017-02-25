@@ -1,4 +1,4 @@
-package com.imagerecognition.enumaration;
+package com.motiondetection.enumaration;
 
 /**
  * Enumaration of upload statuses.

@@ -1,4 +1,4 @@
-package com.imagerecognition.service.dto;
+package com.motiondetection.service.dto;
 
 import java.util.ArrayList;
 import java.util.List;

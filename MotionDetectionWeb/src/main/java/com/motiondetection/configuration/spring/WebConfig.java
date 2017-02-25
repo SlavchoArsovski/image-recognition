@@ -1,6 +1,6 @@
-package com.imagerecognition.configuration.spring;
+package com.motiondetection.configuration.spring;
 
-import com.imagerecognition.web.WebComponents;
+import com.motiondetection.web.WebComponents;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

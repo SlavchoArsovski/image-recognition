@@ -1,4 +1,4 @@
-package com.imagerecognition.service;
+package com.motiondetection.service;
 
 /**
  * Marker interface used for component scanning.

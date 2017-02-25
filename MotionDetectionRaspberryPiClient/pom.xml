@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.imagerecognition</groupId>
-    <artifactId>ImageRecognition</artifactId>
+    <groupId>com.motiondetection</groupId>
+    <artifactId>MotionDetection</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ImageRecognitionRaspberryPiClient</artifactId>
+  <artifactId>MotionDetectionRaspberryPiClient</artifactId>
   <packaging>jar</packaging>
 
 
