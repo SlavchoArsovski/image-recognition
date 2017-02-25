@@ -18,45 +18,12 @@
 <body>
     <h1>Motion Detection</h1>
 
-    <img id="image_0" class="image-recognition"
-         src=""
-         alt="image no found"/>
+    <c:forEach begin="0" end="10" varStatus="loop">
+        <img id="image_${loop.index}" class="image-recognition"
+             src=""
+             alt="image no found"/>
 
-    <img id="image_1" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_2" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_3" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_4" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_5" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_6" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_7" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_8" class="image-recognition"
-         src=""
-         alt="image no found"/>
-
-    <img id="image_9" class="image-recognition"
-         src=""
-         alt="image no found"/>
+    </c:forEach>
 
 </body>
 </html>
