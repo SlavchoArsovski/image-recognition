@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import com.motiondetection.enumaration.UploadStatus;
-import com.motiondetection.service.ImageRecognitionServiceImpl;
+import com.motiondetection.service.ImageRecognitionService;
 import com.motiondetection.service.dto.StoredImagesDto;
 
 /**
@@ -25,7 +25,7 @@ public class HomeController {
     public static final String HOME_VIEW_NAME = "home";
 
     @Autowired
-    private ImageRecognitionServiceImpl imageRecognitionService;
+    private ImageRecognitionService imageRecognitionService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
