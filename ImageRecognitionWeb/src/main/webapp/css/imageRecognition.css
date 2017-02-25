@@ -1,6 +1,19 @@
-.image-recognition {
+.motion-detection {
     width: 200px;
     height: auto;
     float: left;
+    margin: 9px;
+    cursor: pointer;
+    border: solid black 1px;
+}
+
+.selected-image {
+    float: left;
     margin: 10px;
+    width: 480px;
+    height: auto;
+}
+
+h1 {
+    font-size: medium;
 }

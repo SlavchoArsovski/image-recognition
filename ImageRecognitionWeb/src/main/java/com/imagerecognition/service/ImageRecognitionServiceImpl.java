@@ -33,6 +33,10 @@ public class ImageRecognitionServiceImpl implements ImageRecognitionService, App
   @Value("${imageRecognition.imagesFolderPath}")
   private String imagesFolderPath;
 
+  @Value("${imageRecognition.maxImages}")
+  private int maxImages;
+
+
   private ApplicationContext applicationContext;
 
   @Override
@@ -85,7 +89,7 @@ public class ImageRecognitionServiceImpl implements ImageRecognitionService, App
 
     StoredImagesDto storedImagesDto = new StoredImagesDto();
 
-    for (int i = 0, length = Math.min(files.length, 10); i < length; i++) {
+    for (int i = 0, length = Math.min(files.length, maxImages); i < length; i++) {
 
       String imageAsEncodedString = getImageAsEncodedString(files[i]);
       storedImagesDto.addImageEncoded(imageAsEncodedString);
