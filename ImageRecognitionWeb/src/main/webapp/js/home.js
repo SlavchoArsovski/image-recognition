@@ -9,11 +9,13 @@ $(document).ready(function () {
         $.ajax({
             dataType: "json",
             type: 'GET',
-            url: 'home/getImage',
+            url: 'home/getImages',
             cache: false,
             data: {},
             success: function (response) {
-                $('#imageRecognition').attr('src', 'data:image/jpeg;base64,' + response.data);
+                $(response.imagesEncoded).each(function(index, element) {
+                    $('#image_' + index).attr('src', 'data:image/jpeg;base64,' + element);
+                });
             }
         });
         

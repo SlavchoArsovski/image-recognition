@@ -16,10 +16,47 @@
 </head>
 
 <body>
-    <h1>Image Recognition</h1>
+    <h1>Motion Detection</h1>
 
-    <img id="imageRecognition" class="image-recognition"
+    <img id="image_0" class="image-recognition"
          src=""
          alt="image no found"/>
+
+    <img id="image_1" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_2" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_3" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_4" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_5" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_6" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_7" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_8" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
+    <img id="image_9" class="image-recognition"
+         src=""
+         alt="image no found"/>
+
 </body>
 </html>

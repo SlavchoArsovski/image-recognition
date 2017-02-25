@@ -1,4 +1,6 @@
 .image-recognition {
-    width: 1024px;
+    width: 200px;
     height: auto;
+    float: left;
+    margin: 10px;
 }
