@@ -14,6 +14,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +35,12 @@ public class ImageRecognitionService implements ApplicationContextAware {
         String status;
         String imageType = getImageType(file);
 
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+        String formatDateTime = now.format(formatter);
+
         try {
+            // File destination = new File(String.format("%simage-%s.%s", imagesFolderPath, formatDateTime, imageType));
             File destination = new File(String.format("%simageRecognised.%s", imagesFolderPath, imageType));
             BufferedImage src = ImageIO.read(file.getInputStream());
             ImageIO.write(src, imageType, destination);

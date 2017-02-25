@@ -1,0 +1,29 @@
+use_dropbox:
+    false
+server:
+    url: http://169.254.73.225:5556/image-recognition/home/upload
+    headers: image/jpeg
+storage_base_path:
+    /home/pi/Downloads/pi-home-surveillance/storage
+# Should the security feed be displayed locally
+show_video:
+    true
+# Time between two uploads
+min_upload_seconds:
+    3.0
+# The number of frames with consistent motion before triggering an upload
+min_motion_frames:
+    4
+camera_warmup_time:
+    2.5
+# The delta_thresh defines the motion sensitivity
+delta_thresh:
+    3.5
+resolution:
+    width: 768
+    height: 540
+fps:
+    16
+# Minimum area for a contour
+min_area:
+    5000
