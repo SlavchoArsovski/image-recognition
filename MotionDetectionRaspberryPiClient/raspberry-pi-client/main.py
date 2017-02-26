@@ -117,7 +117,6 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 			# Check to see if the number of frames with consistent motion is high enough
 			if motionCounter >= conf["min_motion_frames"]:
-				# check to see if dropbox sohuld be used
 				t = TempImage(conf["storage_base_path"])
 				cv2.imwrite(t.path, frame)
 				print "[INFO] Uploading image. Path: {path}".format(path=t.path)
