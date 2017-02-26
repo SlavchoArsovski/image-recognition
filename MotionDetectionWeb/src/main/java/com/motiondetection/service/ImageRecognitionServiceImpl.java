@@ -1,10 +1,19 @@
 package com.motiondetection.service;
 
-import com.motiondetection.enumaration.UploadStatus;
-import com.motiondetection.service.dto.StoredImagesDto;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -13,22 +22,18 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.motiondetection.enumaration.UploadStatus;
+import com.motiondetection.service.dto.StoredImagesDto;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * Implementation of {@link ImageRecognitionService}.
  */
 @Service
 public class ImageRecognitionServiceImpl implements ImageRecognitionService, ApplicationContextAware {
+
+  private static final String IMAGE_FILE_REGEX =
+      "image-\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}.(jpeg|jpg|gif|png|bmp)";
 
   @Value("${imageRecognition.imagesFolderPath}")
   private String imagesFolderPath;
@@ -82,8 +87,8 @@ public class ImageRecognitionServiceImpl implements ImageRecognitionService, App
   public StoredImagesDto getStoredImages() {
 
     File storedImagesDir = new File(imagesFolderPath);
-
-    File[] files = storedImagesDir.listFiles();
+    FileFilter regexFileFilter = new RegexFileFilter(IMAGE_FILE_REGEX);
+    File[] files = storedImagesDir.listFiles(regexFileFilter);
 
     Arrays.sort(files, new ImageFilesComparator());
 
