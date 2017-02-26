@@ -2,7 +2,7 @@ server:
     url: http://169.254.73.225:5556/motion-detection/home/upload
     headers: image/jpeg
 storage_base_path:
-    /home/pi/Downloads/pi-home-surveillance/storage
+    /home/pi/Desktop/MotionDetection/storage
 # Should the security feed be displayed locally
 show_video:
     true
