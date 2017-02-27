@@ -34,4 +34,6 @@ $(document).ready(function () {
         var selectedImgSrc = $(event.target).attr('src');
         $('#selected_image').attr('src', selectedImgSrc);
     });
+
+    $('#datepicker').datepicker();
 });
