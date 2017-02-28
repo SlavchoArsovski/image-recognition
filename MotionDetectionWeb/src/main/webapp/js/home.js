@@ -37,9 +37,9 @@ $(document).ready(function () {
 
     $('#datepicker').datepicker();
 
-    $.widget( "ui.labeledslider", $.ui.slider, {
+    $.widget('ui.labeledslider', $.ui.slider, {
 
-        version: "@VERSION",
+        version: '@VERSION',
 
         options: {
             tickInterval: 0,
@@ -58,15 +58,15 @@ $(document).ready(function () {
 
             this.uiSlider =
                 this.element
-                    .wrap( '<div class="ui-slider-wrapper ui-widget"></div>' )
+                    .wrap( '<div class="ui-slider-wrapper ui-widget"></div>')
                     .before( '<div class="ui-slider-labels"></div>' )
                     .parent()
                     .addClass( this.orientation )
-                    .css( 'font-size', this.element.css('font-size') );
+                    .css( 'font-size', this.element.css('font-size'));
 
             this._super();
 
-            this.element.removeClass( 'ui-widget' )
+            this.element.removeClass( 'ui-widget' );
 
             this._alignWithStep();
 
@@ -92,7 +92,7 @@ $(document).ready(function () {
                 cnt = ( max - min ),
                 tickArray = this.options.tickArray,
                 ta = tickArray.length > 0,
-                label, pt,
+                label,
                 i = 0;
 
             $lbl.html('');
@@ -103,7 +103,7 @@ $(document).ready(function () {
 
                     label = labels[i+min] ? labels[i+min] : (this.options.tweenLabels ? i+min : '');
 
-                    $('<div>').addClass( 'ui-slider-label-ticks' )
+                    $('<div>').addClass('ui-slider-label-ticks')
                         .css( dir, (Math.round( ( i / cnt ) * 10000 ) / 100) + '%' )
                         .html( '<span>'+( label )+'</span>' )
                         .appendTo( $lbl );
@@ -159,7 +159,7 @@ $(document).ready(function () {
 
     });
 
-    $("#slider-range").labeledslider({
+    $('#slider-range').labeledslider({
         range: true,
         min: 0,
         max: 24,
