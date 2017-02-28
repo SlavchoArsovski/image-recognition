@@ -23,11 +23,19 @@
 <body>
 <h1>Motion Detection</h1>
 
-<p>Select Date: <input type="text" id="datepicker"></p>
+<p>Select date: <input type="text" id="datepicker"></p>
+
+<div>
+  Select time range:
+</div>
+
+<div class="slider-wrapper">
+  <div id="slider-range"></div>
+</div>
 
 <img id="selected_image" class="selected-image" src="" alt="no image is selected"/>
 
-<div style="clear: both;"> </div>
+<div style="clear: both;"></div>
 
 <c:forEach begin="0" end="11" varStatus="loop">
   <img id="image_${loop.index}" class="motion-detection" data-index="${loop.index}" src="" alt="image no found"/>
