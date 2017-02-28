@@ -22,7 +22,7 @@ import com.motiondetection.service.dto.StoredImagesDto;
 @RequestMapping("/home")
 public class HomeController {
 
-    public static final String HOME_VIEW_NAME = "home";
+    private static final String HOME_VIEW_NAME = "home";
 
     @Autowired
     private MotionDetectionService motionDetectionService;
