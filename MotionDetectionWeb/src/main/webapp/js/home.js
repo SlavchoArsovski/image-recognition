@@ -168,7 +168,6 @@ $(document).ready(function () {
             if (ui.values[0] === ui.values[1]) {
                 return false;
             }
-            console.log( ui.values[0] + '  ' +  ui.values[1]);
         }
     });
 });
