@@ -7,7 +7,7 @@ import com.motiondetection.service.dto.StoredImagesDto;
 /**
  * Image Recognition Service..
  */
-public interface ImageRecognitionService {
+public interface MotionDetectionService {
 
   /**
    * Stores image to file system.

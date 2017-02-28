@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<spring:url value="/css/imageRecognition.css" var="imageRecognitionCss"/>
+<spring:url value="/css/home.css" var="homeCss"/>
 <spring:url value="/css/jquery-ui.min.css" var="jqueryUiCss"/>
 <spring:url value="/js/jquery-3.1.0.min.js" var="jqueryJs"/>
 <spring:url value="/js/jquery-ui.min.js" var="jqueryUiJs"/>
@@ -13,7 +13,7 @@
 
 <head>
   <link href="${jqueryUiCss}" rel="stylesheet"/>
-  <link href="${imageRecognitionCss}" rel="stylesheet"/>
+  <link href="${homeCss}" rel="stylesheet"/>
   <script src="${jqueryJs}" type="application/javascript"></script>
   <script src="${jqueryUiJs}" type="application/javascript"></script>
   <script src="${homeJs}" type="application/javascript"></script>
