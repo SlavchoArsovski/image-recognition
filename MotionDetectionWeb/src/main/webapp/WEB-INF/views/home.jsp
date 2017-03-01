@@ -23,7 +23,7 @@
 <div style="clear: both;"> </div>
 
 <c:forEach begin="0" end="11" varStatus="loop">
-  <img id="image_${loop.index}" class="motion-detection" data-index="${loop.index}" src="" alt="image no found"/>
+  <img id="image_${loop.index}" class="motion-detection" data-index="${loop.index}" src="" alt="image not found"/>
 </c:forEach>
 
 </body>

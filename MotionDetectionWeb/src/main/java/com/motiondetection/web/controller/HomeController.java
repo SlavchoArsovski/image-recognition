@@ -1,19 +1,15 @@
 package com.motiondetection.web.controller;
 
+import com.motiondetection.enumeration.UploadStatus;
+import com.motiondetection.service.ImageRecognitionService;
+import com.motiondetection.service.dto.MonitoringConfig;
+import com.motiondetection.service.dto.StoredImagesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
-
-import com.motiondetection.enumaration.UploadStatus;
-import com.motiondetection.service.ImageRecognitionService;
-import com.motiondetection.service.dto.StoredImagesDto;
 
 /**
  * Controller for home page.
@@ -50,5 +46,18 @@ public class HomeController {
         StoredImagesDto storedImages = imageRecognitionService.getStoredImages();
 
         return storedImages;
+    }
+
+    @RequestMapping(value = "/getConfig", method = RequestMethod.GET)
+    @ResponseBody
+    public MonitoringConfig getConfig() {
+        return new MonitoringConfig();
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/registerDevice", method = RequestMethod.GET)
+    public String registerDevice() {
+        // TODO: Implement
+        return null;
     }
 }

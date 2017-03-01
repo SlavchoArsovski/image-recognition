@@ -2,7 +2,7 @@ package com.motiondetection.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.motiondetection.enumaration.UploadStatus;
+import com.motiondetection.enumeration.UploadStatus;
 import com.motiondetection.service.dto.StoredImagesDto;
 /**
  * Image Recognition Service..

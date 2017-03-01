@@ -1,17 +1,8 @@
 package com.motiondetection.service;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-
+import com.motiondetection.enumeration.UploadStatus;
+import com.motiondetection.service.dto.StoredImagesDto;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.springframework.beans.BeansException;
@@ -22,9 +13,16 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.motiondetection.enumaration.UploadStatus;
-import com.motiondetection.service.dto.StoredImagesDto;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link ImageRecognitionService}.

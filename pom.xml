@@ -19,6 +19,7 @@
     <modules>
         <module>MotionDetectionWeb</module>
         <module>MotionDetectionRaspberryPiClient</module>
+        <module>httpMockClient</module>
     </modules>
 
     <dependencyManagement>
