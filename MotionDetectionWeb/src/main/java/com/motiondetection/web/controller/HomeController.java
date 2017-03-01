@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
+import com.motiondetection.enumaration.UploadStatus;
+import com.motiondetection.service.MotionDetectionService;
+import com.motiondetection.service.dto.StoredImagesDto;
+
 /**
  * Controller for home page.
  */
@@ -18,10 +22,10 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 @RequestMapping("/home")
 public class HomeController {
 
-    public static final String HOME_VIEW_NAME = "home";
+    private static final String HOME_VIEW_NAME = "home";
 
     @Autowired
-    private ImageRecognitionService imageRecognitionService;
+    private MotionDetectionService motionDetectionService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -36,14 +40,14 @@ public class HomeController {
     @RequestMapping(value="/upload", method = RequestMethod.POST)
     @ResponseBody
     public UploadStatus uploadImage(@RequestParam(name= "image") MultipartFile file) {
-        return imageRecognitionService.storeImage(file);
+        return motionDetectionService.storeImage(file);
     }
 
     @RequestMapping(value = "/getImages", method = RequestMethod.GET)
     @ResponseBody
     public StoredImagesDto getImages() {
 
-        StoredImagesDto storedImages = imageRecognitionService.getStoredImages();
+        StoredImagesDto storedImages = motionDetectionService.getStoredImages();
 
         return storedImages;
     }

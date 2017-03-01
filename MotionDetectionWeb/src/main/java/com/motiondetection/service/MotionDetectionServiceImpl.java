@@ -25,10 +25,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of {@link ImageRecognitionService}.
+ * Implementation of {@link MotionDetectionService}.
  */
 @Service
-public class ImageRecognitionServiceImpl implements ImageRecognitionService, ApplicationContextAware {
+public class MotionDetectionServiceImpl implements MotionDetectionService, ApplicationContextAware {
 
   private static final String IMAGE_FILE_REGEX =
       "image-\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}.(jpeg|jpg|gif|png|bmp)";
