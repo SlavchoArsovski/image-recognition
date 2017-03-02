@@ -24,6 +24,7 @@ public class DataServiceImpl implements DataService {
   private Logger logger = LoggerFactory.getLogger(DataServiceImpl.class);
 
   /** {@inheritDoc}*/
+  @Override
   public MonitoringConfig getConfig(String url) {
     RestTemplate restTemplate = new RestTemplate();
 
@@ -41,6 +42,7 @@ public class DataServiceImpl implements DataService {
   }
 
   /** {@inheritDoc}*/
+  @Override
   public void pushData(MultiValueMap<String, Object> data, String url) {
 
     logger.info("Attempting to push the data by sending a request to the URL: {}", url);

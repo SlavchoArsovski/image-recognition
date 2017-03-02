@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.motiondetection.enumeration.UploadStatus;
 import com.motiondetection.service.dto.StoredImagesDto;
 /**
- * Image Recognition Service..
+ * Motion Detection Service.
  */
 public interface MotionDetectionService {
 

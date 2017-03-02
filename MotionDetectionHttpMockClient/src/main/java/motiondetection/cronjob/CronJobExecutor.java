@@ -1,6 +1,7 @@
 package motiondetection.cronjob;
 
 import motiondetection.model.MonitoringConfig;
+import motiondetection.serviceclient.DataService;
 import motiondetection.serviceclient.DataServiceImpl;
 import motiondetection.util.ImageReader;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class CronJobExecutor {
   private Logger logger = LoggerFactory.getLogger(CronJobExecutor.class);
   
   @Autowired
-  private DataServiceImpl dataService;
+  private DataService dataService;
 
   @Autowired
   private ImageReader imageReader;
