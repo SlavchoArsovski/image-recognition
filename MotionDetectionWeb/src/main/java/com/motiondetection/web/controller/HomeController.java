@@ -1,7 +1,7 @@
 package com.motiondetection.web.controller;
 
 import com.motiondetection.enumeration.UploadStatus;
-import com.motiondetection.service.ImageRecognitionService;
+import com.motiondetection.service.MotionDetectionService;
 import com.motiondetection.service.dto.MonitoringConfig;
 import com.motiondetection.service.dto.StoredImagesDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
-
-import com.motiondetection.enumaration.UploadStatus;
-import com.motiondetection.service.MotionDetectionService;
-import com.motiondetection.service.dto.StoredImagesDto;
 
 /**
  * Controller for home page.
