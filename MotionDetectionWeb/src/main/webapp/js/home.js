@@ -49,9 +49,9 @@ $(document).ready(function() {
 
   }
 
-  setInterval(function(){ refreshImages(); }, 1000);
+  // setInterval(function(){ refreshImages(); }, 1000);
 
-  $('#datepicker').datepicker();
+  $('#datepicker').datepicker({ maxDate: new Date()});
 
   $.widget('ui.labeledslider', $.ui.slider, {
 
