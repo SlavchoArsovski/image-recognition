@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import motiondetection.model.MonitoringConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -23,17 +24,12 @@ public class DataServiceImpl implements DataService {
 
   private Logger logger = LoggerFactory.getLogger(DataServiceImpl.class);
 
+  @Autowired
+  private RestTemplate restTemplate;
+
   /** {@inheritDoc}*/
   @Override
   public MonitoringConfig getConfig(String url) {
-    RestTemplate restTemplate = new RestTemplate();
-
-    List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-    MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
-    ObjectMapper objectMapper = new ObjectMapper();
-    jsonMessageConverter.setObjectMapper(objectMapper);
-    messageConverters.add(jsonMessageConverter);
-    restTemplate.setMessageConverters(messageConverters);
 
     MonitoringConfig config = restTemplate.getForObject(url, MonitoringConfig.class);
     logger.info("Fetched data: {}", config);
@@ -46,7 +42,6 @@ public class DataServiceImpl implements DataService {
   public void pushData(MultiValueMap<String, Object> data, String url) {
 
     logger.info("Attempting to push the data by sending a request to the URL: {}", url);
-    RestTemplate restTemplate = new RestTemplate();
 
     restTemplate.postForObject(
             url,
