@@ -2,6 +2,7 @@ package com.motiondetection.web.controller;
 
 import com.motiondetection.enumeration.UploadStatus;
 import com.motiondetection.service.MotionDetectionService;
+import com.motiondetection.service.dto.ImageSearchDto;
 import com.motiondetection.service.dto.MonitoringConfig;
 import com.motiondetection.service.dto.StoredImagesDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,15 @@ public class HomeController {
 
     @RequestMapping(value = "/getImages", method = RequestMethod.GET)
     @ResponseBody
-    public StoredImagesDto getImages() {
+    public StoredImagesDto getImages(
+        @RequestParam(name= "selectedDate", required = false) String selectedDate,
+        @RequestParam(name= "selectedClientId", required = false) String selectedClientId) {
 
-        StoredImagesDto storedImages = motionDetectionService.getStoredImages();
+        ImageSearchDto imageSearchDto = new ImageSearchDto();
+        imageSearchDto.setDate(selectedDate);
+        imageSearchDto.setClientId(selectedClientId);
+
+        StoredImagesDto storedImages = motionDetectionService.getStoredImages(imageSearchDto);
 
         return storedImages;
     }

@@ -1,10 +1,12 @@
 package com.motiondetection.service;
 
 import com.motiondetection.enumeration.UploadStatus;
+import com.motiondetection.service.dto.ImageSearchDto;
 import com.motiondetection.service.dto.StoredImagesDto;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,12 +36,17 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
   private static final String IMAGE_FILE_REGEX =
       "image-\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}.(jpeg|jpg|gif|png|bmp)";
 
+  private static final String FULL_TIMESTAMP_PATTERN = "yyyy-MM-dd-HH-mm-ss";
+  private static final DateTimeFormatter fullTimeStampFormatter = DateTimeFormatter.ofPattern(FULL_TIMESTAMP_PATTERN);
+
+  private static final String DATE_PATTERN = "yyyy-MM-dd";
+  private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+
   @Value("${imageRecognition.imagesFolderPath}")
   private String imagesFolderPath;
 
   @Value("${imageRecognition.maxImages}")
   private int maxImages;
-
 
   private ApplicationContext applicationContext;
 
@@ -48,12 +56,21 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     UploadStatus status;
     String imageType = getImageType(file);
 
-    LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-    String formatDateTime = now.format(formatter);
+    LocalDateTime currentDateTime = LocalDateTime.now();
+    String currentDateTimeFormatted = currentDateTime.format(fullTimeStampFormatter);
+    String currentDateFormatted = currentDateTime.format(dateFormatter);
 
     try {
-      File destination = new File(String.format("%simage-%s.%s", imagesFolderPath, formatDateTime, imageType));
+
+      String imageDirectoryPath = String.format("%s%s", imagesFolderPath, currentDateFormatted);
+      File directory = new File(imageDirectoryPath);
+      if (!directory.exists()){
+        directory.mkdir();
+      }
+
+      String fileName = String.format("%s\\image-%s.%s", imageDirectoryPath, currentDateTimeFormatted, imageType);
+
+      File destination = new File(fileName);
       BufferedImage src = ImageIO.read(file.getInputStream());
       ImageIO.write(src, imageType, destination);
 
@@ -71,7 +88,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
 
     String contentType = file.getContentType();
 
-    Pattern imageTypePattern = Pattern.compile("image/(.+)");
+    Pattern imageTypePattern = Pattern.compile("image/(jpeg|jpg|gif|png|bmp)");
     Matcher matcher = imageTypePattern.matcher(contentType);
 
     if (!matcher.matches()) {
@@ -82,23 +99,42 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
   }
 
   @Override
-  public StoredImagesDto getStoredImages() {
+  public StoredImagesDto getStoredImages(ImageSearchDto imageSearchDto) {
 
-    File storedImagesDir = new File(imagesFolderPath);
+    String imageDirectory = resolveImageDirectory(imageSearchDto);
+    File storedImagesDir = new File(imageDirectory);
     FileFilter regexFileFilter = new RegexFileFilter(IMAGE_FILE_REGEX);
     File[] files = storedImagesDir.listFiles(regexFileFilter);
 
-    Arrays.sort(files, new ImageFilesComparator());
+    StoredImagesDto dto = new StoredImagesDto();
 
-    StoredImagesDto storedImagesDto = new StoredImagesDto();
+    if (files != null)  {
 
-    for (int i = 0, length = Math.min(files.length, maxImages); i < length; i++) {
+      Arrays.sort(files, new ImageFilesComparator());
 
-      String imageAsEncodedString = getImageAsEncodedString(files[i]);
-      storedImagesDto.addImageEncoded(imageAsEncodedString);
+      for (File file : files) {
+        String imageAsEncodedString = getImageAsEncodedString(file);
+        dto.addImageEncoded(imageAsEncodedString);
+      }
     }
 
-    return storedImagesDto;
+    return dto;
+  }
+
+  private String resolveImageDirectory(ImageSearchDto imageSearchDto) {
+
+    String date = imageSearchDto.getDate();
+    String directory;
+
+    if (StringUtils.isNotBlank(date) && date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+      directory = String.format("%s%s", imagesFolderPath, date);
+    } else {
+      LocalDateTime currentDateTime = LocalDateTime.now();
+      String currentDateFormatted = currentDateTime.format(dateFormatter);
+      directory = String.format("%s%s", imagesFolderPath, currentDateFormatted);
+    }
+
+    return directory;
   }
 
   private String getImageAsEncodedString(File file) {

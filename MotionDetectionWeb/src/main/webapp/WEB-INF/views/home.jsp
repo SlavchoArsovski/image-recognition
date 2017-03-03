@@ -23,23 +23,23 @@
 <body>
 <h1>Motion Detection</h1>
 
-<p>Select date: <input type="text" id="datepicker"></p>
-
 <div>
-  Select time range:
+  <div class="selectionContainer">
+    <p>Selected date: <label id="selectedDate"></label></p>
+    <div id="datepicker">
+    </div>
+
+    <div>
+      Selected time range:
+      <div class="slider-wrapper">
+        <div id="slider-range"></div>
+      </div>
+    </div>
+    <img id="selected_image" class="selected-image" src="" alt="no image is selected"/>
+  </div>
+
+  <div class="image-view-container"></div>
+
 </div>
-
-<div class="slider-wrapper">
-  <div id="slider-range"></div>
-</div>
-
-<img id="selected_image" class="selected-image" src="" alt="no image is selected"/>
-
-<div style="clear: both;"></div>
-
-<c:forEach begin="0" end="11" varStatus="loop">
-  <img id="image_${loop.index}" class="motion-detection" data-index="${loop.index}" src="" alt="image not found"/>
-</c:forEach>
-
 </body>
 </html>

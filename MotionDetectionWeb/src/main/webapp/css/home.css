@@ -1,3 +1,13 @@
+.selectionContainer {
+    width: 40%;
+    float: left;
+}
+
+.image-view-container {
+    width: 60%;
+    float: left;
+}
+
 .motion-detection {
     width: 200px;
     height: auto;
