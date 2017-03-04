@@ -19,14 +19,16 @@ $(document).ready(function() {
     var selectedDate = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
 
     var data = {
-      selectedDate: selectedDate,
-      selectedClientId: ''
+      date: selectedDate,
+      timeFrom: '',
+      timeTo: '',
+      clientId: ''
     };
 
     $.ajax({
       dataType: "json",
       type: 'GET',
-      url: 'home/getImages',
+      url: motionDetectionApp.conf.contextPath + '/home/getImages',
       cache: false,
       data: data,
       success: function(response) {

@@ -20,6 +20,15 @@
   <script src="${sliderComponentJs}" type="application/javascript"></script>
   <script src="${homeJs}" type="application/javascript"></script>
   <title>Motion Detection</title>
+
+  <script>
+    motionDetectionApp = {
+      conf : {
+        contextPath: '${SERVLET_CONTEXT_PATH}'
+      }
+    }
+  </script>
+
 </head>
 
 <body>

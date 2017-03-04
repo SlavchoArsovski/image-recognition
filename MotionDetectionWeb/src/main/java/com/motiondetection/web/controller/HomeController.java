@@ -6,11 +6,13 @@ import com.motiondetection.service.dto.ImageSearchDto;
 import com.motiondetection.service.dto.MonitoringConfig;
 import com.motiondetection.service.dto.StoredImagesDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller for home page.
@@ -20,6 +22,10 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 public class HomeController {
 
     private static final String HOME_VIEW_NAME = "home";
+    private static final String SERVLET_CONTEXT_PATH = "SERVLET_CONTEXT_PATH";
+
+    @Value("#{servletContext.contextPath}")
+    private String servletContextPath;
 
     @Autowired
     private MotionDetectionService motionDetectionService;
@@ -30,8 +36,12 @@ public class HomeController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String home() {
-        return HOME_VIEW_NAME;
+    public ModelAndView home() {
+
+        ModelAndView modelAndView = new ModelAndView(HOME_VIEW_NAME);
+        modelAndView.addObject(SERVLET_CONTEXT_PATH, servletContextPath);
+
+        return modelAndView;
     }
 
     @RequestMapping(value="/upload", method = RequestMethod.POST)
@@ -43,12 +53,14 @@ public class HomeController {
     @RequestMapping(value = "/getImages", method = RequestMethod.GET)
     @ResponseBody
     public StoredImagesDto getImages(
-        @RequestParam(name= "selectedDate", required = false) String selectedDate,
-        @RequestParam(name= "selectedClientId", required = false) String selectedClientId) {
+        @RequestParam(name= "date", required = false) String date,
+        @RequestParam(name= "timeFrom", required = false) String timeFrom,
+        @RequestParam(name= "timeTo", required = false) String timeTo,
+        @RequestParam(name= "clientId", required = false) String clientId) {
 
         ImageSearchDto imageSearchDto = new ImageSearchDto();
-        imageSearchDto.setDate(selectedDate);
-        imageSearchDto.setClientId(selectedClientId);
+        imageSearchDto.setDate(date);
+        imageSearchDto.setClientId(clientId);
 
         StoredImagesDto storedImages = motionDetectionService.getStoredImages(imageSearchDto);
 
