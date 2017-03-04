@@ -16,12 +16,22 @@ $(document).ready(function() {
 
   function refreshImages() {
 
-    var selectedDate = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
+    var date = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
+
+    var sliderValues = $(guiComponents.sliderTimeRange).labeledslider('values');
+    var timeFrom = sliderValues[0];
+    if (timeFrom < 10) {
+      timeFrom = '0' + timeFrom;
+    }
+    var timeTo = sliderValues[1];
+    if (timeTo < 10) {
+      timeTo = '0' + timeTo;
+    }
 
     var data = {
-      date: selectedDate,
-      timeFrom: '',
-      timeTo: '',
+      date: date,
+      timeFrom: timeFrom,
+      timeTo: timeTo,
       clientId: ''
     };
 
@@ -86,7 +96,15 @@ $(document).ready(function() {
         return false;
       }
 
-      $(guiComponents.selectedTimeRange).text(ui.values[0] + ' - ' + ui.values[1]);
+      var timeFrom = ui.values[0];
+      if (timeFrom < 10) {
+        timeFrom = '0' + timeFrom;
+      }
+      var timeTo = ui.values[1];
+      if (timeTo < 10) {
+        timeTo = '0' + timeTo;
+      }
+      $(guiComponents.selectedTimeRange).text(timeFrom + ' - ' + timeTo + ' hour');
 
     },
     stop: function(event, ui) {
@@ -95,7 +113,16 @@ $(document).ready(function() {
   });
 
   var sliderValues = $(guiComponents.sliderTimeRange).labeledslider('values');
-  $(guiComponents.selectedTimeRange).text(sliderValues[0] + ' - ' + sliderValues[1]);
+  var timeFrom = sliderValues[0];
+  if (timeFrom < 10) {
+    timeFrom = '0' + timeFrom;
+  }
+  var timeTo = sliderValues[1];
+  if (timeTo < 10) {
+    timeTo = '0' + timeTo;
+  }
+
+  $(guiComponents.selectedTimeRange).text(timeFrom + ' - ' + timeTo + ' hour');
 
   refreshImages();
 });

@@ -64,6 +64,8 @@ public class HomeController {
 
         ImageSearchDto imageSearchDto = new ImageSearchDto();
         imageSearchDto.setDate(date);
+        imageSearchDto.setTimeFrom(timeFrom);
+        imageSearchDto.setTimeTo(timeTo);
         imageSearchDto.setClientId(clientId);
 
         StoredImagesDto storedImages = motionDetectionService.getStoredImages(imageSearchDto);
