@@ -1,3 +1,13 @@
+var guiComponents = {
+  sliderTimeRange: '#slider-range',
+  selectedTimeRange: '#selectedTimeRange',
+  datePicker: '#datepicker',
+  selectedDate: '#selectedDate',
+  motionDetectionImage: '.motion-detection',
+  selectedImage: '#selected_image',
+  imageViewContainer: '.image-view-container'
+};
+
 $(document).ready(function() {
 
   $.ajaxSetup({ cache: false });
@@ -6,7 +16,7 @@ $(document).ready(function() {
 
   function refreshImages() {
 
-    var selectedDate = $.datepicker.formatDate('yy-mm-dd', $('#datepicker').datepicker('getDate'));
+    var selectedDate = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
 
     var data = {
       selectedDate: selectedDate,
@@ -21,7 +31,7 @@ $(document).ready(function() {
       data: data,
       success: function(response) {
 
-        $('.motion-detection').remove();
+        $(guiComponents.motionDetectionImage).remove();
 
         $(response.imagesEncoded).each(function(index, element) {
 
@@ -33,17 +43,17 @@ $(document).ready(function() {
                 class: 'motion-detection'
               });
 
-          $('.image-view-container').append(img);
+          $(guiComponents.imageViewContainer).append(img);
         });
 
         if (selected === -1 && response.imagesEncoded.length > 1) {
-          $('#selected_image').attr('src', 'data:image/jpeg;base64,' + response.imagesEncoded[0]);
+          $(guiComponents.selectedImage).attr('src', 'data:image/jpeg;base64,' + response.imagesEncoded[0]);
         }
 
-        $('.motion-detection').click(function(event) {
+        $(guiComponents.motionDetectionImage).click(function(event) {
           selected = $(event.target).data('index');
           var selectedImgSrc = $(event.target).attr('src');
-          $('#selected_image').attr('src', selectedImgSrc);
+          $(guiComponents.selectedImage).attr('src', selectedImgSrc);
         });
       }
     });
@@ -52,19 +62,19 @@ $(document).ready(function() {
 
   setInterval(function(){ refreshImages(); }, 3000);
 
-  $('#datepicker').datepicker({
+  $(guiComponents.datePicker).datepicker({
     maxDate: new Date(),
     onSelect: function(dateText) {
-      $('#selectedDate').text(this.value);
+      $(guiComponents.selectedDate).text(this.value);
       refreshImages();
     }
   });
 
-  $('#selectedDate').text($('#datepicker').val());
+  $(guiComponents.selectedDate).text($(guiComponents.datePicker).val());
 
 
 
-  $('#slider-range').labeledslider({
+  $(guiComponents.sliderTimeRange).labeledslider({
     range: true,
     min: 0,
     max: 24,
@@ -74,7 +84,7 @@ $(document).ready(function() {
         return false;
       }
 
-      $('#selectedTimeRange').text(ui.values[0] + ' - ' + ui.values[1]);
+      $(guiComponents.selectedTimeRange).text(ui.values[0] + ' - ' + ui.values[1]);
 
     },
     stop: function(event, ui) {
@@ -82,8 +92,8 @@ $(document).ready(function() {
     }
   });
 
-  var sliderValues = $('#slider-range').labeledslider('values');
-  $('#selectedTimeRange').text(sliderValues[0] + ' - ' + sliderValues[1]);
+  var sliderValues = $(guiComponents.sliderTimeRange).labeledslider('values');
+  $(guiComponents.selectedTimeRange).text(sliderValues[0] + ' - ' + sliderValues[1]);
 
   refreshImages();
 });
