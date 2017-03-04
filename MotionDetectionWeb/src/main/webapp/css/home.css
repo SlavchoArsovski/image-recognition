@@ -29,12 +29,13 @@ h1 {
 }
 
 .slider-wrapper {
-  width: 500px;
+  width: 400px;
   margin: 10px;
 }
 
 .ui-slider-wrapper {
   position: relative;
+  font-size: 14px;
 }
 
 .ui-slider-wrapper .ui-slider-horizontal {
