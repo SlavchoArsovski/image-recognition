@@ -7,6 +7,7 @@ $(document).ready(function() {
   function refreshImages() {
 
     var selectedDate = $.datepicker.formatDate('yy-mm-dd', $('#datepicker').datepicker('getDate'));
+
     var data = {
       selectedDate: selectedDate,
       selectedClientId: ''
@@ -51,7 +52,15 @@ $(document).ready(function() {
 
   setInterval(function(){ refreshImages(); }, 3000);
 
-  $('#datepicker').datepicker({ maxDate: new Date()});
+  $('#datepicker').datepicker({
+    maxDate: new Date(),
+    onSelect: function(dateText) {
+      $('#selectedDate').text(this.value);
+      refreshImages();
+    }
+  });
+
+  $('#selectedDate').text($('#datepicker').val());
 
 
 
@@ -64,8 +73,17 @@ $(document).ready(function() {
       if (ui.values[0] === ui.values[1]) {
         return false;
       }
+
+      $('#selectedTimeRange').text(ui.values[0] + ' - ' + ui.values[1]);
+
+    },
+    stop: function(event, ui) {
+      refreshImages();
     }
   });
+
+  var sliderValues = $('#slider-range').labeledslider('values');
+  $('#selectedTimeRange').text(sliderValues[0] + ' - ' + sliderValues[1]);
 
   refreshImages();
 });

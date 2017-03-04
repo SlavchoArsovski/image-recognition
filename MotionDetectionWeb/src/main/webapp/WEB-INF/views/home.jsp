@@ -32,7 +32,7 @@
     </div>
 
     <div>
-      Selected time range:
+      <p>Selected time range: <label id="selectedTimeRange"></label></p>
       <div class="slider-wrapper">
         <div id="slider-range"></div>
       </div>
