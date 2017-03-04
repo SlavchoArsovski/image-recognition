@@ -7,6 +7,7 @@
 <spring:url value="/css/jquery-ui.min.css" var="jqueryUiCss"/>
 <spring:url value="/js/jquery-3.1.0.min.js" var="jqueryJs"/>
 <spring:url value="/js/jquery-ui.min.js" var="jqueryUiJs"/>
+<spring:url value="/js/sliderComponent.js" var="sliderComponentJs"/>
 <spring:url value="/js/home.js" var="homeJs"/>
 
 <html>
@@ -16,6 +17,7 @@
   <link href="${homeCss}" rel="stylesheet"/>
   <script src="${jqueryJs}" type="application/javascript"></script>
   <script src="${jqueryUiJs}" type="application/javascript"></script>
+  <script src="${sliderComponentJs}" type="application/javascript"></script>
   <script src="${homeJs}" type="application/javascript"></script>
   <title>Motion Detection</title>
 </head>
