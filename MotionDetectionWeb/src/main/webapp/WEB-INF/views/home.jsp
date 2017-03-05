@@ -32,14 +32,10 @@
 </head>
 
 <body>
-<h1>Motion Detection</h1>
 
 <div>
 
   <div class="selectionContainer">
-    <p>Selected date: <label id="selectedDate"></label></p>
-    <div id="datepicker">
-    </div>
 
     <p>Selected client: </p>
     <div>
@@ -50,6 +46,10 @@
           </option>
         </c:forEach>
       </select>
+    </div>
+
+    <p>Selected date: <label id="selectedDate"></label></p>
+    <div id="datepicker">
     </div>
 
     <div>

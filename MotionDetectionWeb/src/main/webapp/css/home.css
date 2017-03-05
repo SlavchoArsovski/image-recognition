@@ -28,7 +28,11 @@
 
 h1 {
   font-size: medium;
-  margin: 0;
+  margin: 2px;
+}
+
+p {
+  margin: 7px;
 }
 
 .slider-wrapper {
