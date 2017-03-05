@@ -66,6 +66,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
       String imageDirectoryPath = String.format("%s%s", imagesFolderPath, currentDateFormatted);
       File directory = new File(imageDirectoryPath);
       if (!directory.exists()){
+        //noinspection ResultOfMethodCallIgnored
         directory.mkdir();
       }
 
@@ -112,7 +113,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     if (files != null)  {
 
       String date = String.format("%s-00-00-00", imageSearchDto.getDate());
-      LocalDateTime dateTime = LocalDateTime.parse(date, fullTimeStampFormatter );
+      LocalDateTime dateTime = LocalDateTime.parse(date, fullTimeStampFormatter);
       LocalDateTime from = dateTime.plusHours(Long.valueOf(imageSearchDto.getTimeFrom()));
       LocalDateTime to = dateTime.plusHours(Long.valueOf(imageSearchDto.getTimeTo()));
 

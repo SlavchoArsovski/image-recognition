@@ -1,11 +1,14 @@
 .selectionContainer {
-  width: 40%;
+  width: 35%;
   float: left;
 }
 
 .image-view-container {
-  width: 60%;
+  width: 65%;
   float: left;
+  height: 640px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .motion-detection {
