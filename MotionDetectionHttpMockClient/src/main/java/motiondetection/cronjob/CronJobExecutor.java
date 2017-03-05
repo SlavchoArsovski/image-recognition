@@ -20,7 +20,6 @@ import java.util.Random;
  * Used to execute cron jobs.
  */
 @Service
-@PropertySource("classpath:/config.properties")
 public class CronJobExecutor {
 
   private Logger logger = Logger.getLogger(CronJobExecutor.class);

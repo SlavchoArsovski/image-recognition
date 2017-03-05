@@ -35,9 +35,21 @@
 <h1>Motion Detection</h1>
 
 <div>
+
   <div class="selectionContainer">
     <p>Selected date: <label id="selectedDate"></label></p>
     <div id="datepicker">
+    </div>
+
+    <p>Selected client: </p>
+    <div>
+      <select id="selectClientDropDown">
+        <c:forEach items="${clients}" var="client">
+          <option value="${client}">
+              ${client}
+          </option>
+        </c:forEach>
+      </select>
     </div>
 
     <div>

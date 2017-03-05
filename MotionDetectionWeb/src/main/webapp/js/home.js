@@ -5,7 +5,8 @@ var guiComponents = {
   selectedDate: '#selectedDate',
   motionDetectionImage: '.motion-detection',
   selectedImage: '#selected_image',
-  imageViewContainer: '.image-view-container'
+  imageViewContainer: '.image-view-container',
+  selectClientDropDown: '#selectClientDropDown'
 };
 
 $(document).ready(function() {
@@ -28,11 +29,12 @@ $(document).ready(function() {
       timeTo = '0' + timeTo;
     }
 
+    var clientId = $(guiComponents.selectClientDropDown).find(":selected").val();
     var data = {
       date: date,
       timeFrom: timeFrom,
       timeTo: timeTo,
-      clientId: ''
+      clientId: clientId
     };
 
     $.ajax({
@@ -123,6 +125,10 @@ $(document).ready(function() {
   }
 
   $(guiComponents.selectedTimeRange).text(timeFrom + ' - ' + timeTo + ' hour');
+
+  $(guiComponents.selectClientDropDown).change(function() {
+    refreshImages();
+  });
 
   refreshImages();
 });

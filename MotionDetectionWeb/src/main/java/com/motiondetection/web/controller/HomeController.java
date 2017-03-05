@@ -1,5 +1,8 @@
 package com.motiondetection.web.controller;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.motiondetection.enumeration.UploadStatus;
 import com.motiondetection.service.MotionDetectionService;
 import com.motiondetection.service.dto.ImageSearchDto;
@@ -27,6 +30,7 @@ public class HomeController {
 
     private static final String HOME_VIEW_NAME = "home";
     private static final String SERVLET_CONTEXT_PATH = "SERVLET_CONTEXT_PATH";
+    private static final String CLIENT_LIST = "clients";
 
     @Value("#{servletContext.contextPath}")
     private String servletContextPath;
@@ -45,13 +49,19 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView(HOME_VIEW_NAME);
         modelAndView.addObject(SERVLET_CONTEXT_PATH, servletContextPath);
 
+        List<String> clientList = motionDetectionService.getClientList();
+        modelAndView.addObject(CLIENT_LIST, clientList);
+
         return modelAndView;
     }
 
     @RequestMapping(value="/upload", method = RequestMethod.POST)
     @ResponseBody
-    public UploadStatus uploadImage(@RequestParam(name= "image") MultipartFile file) {
-        return motionDetectionService.storeImage(file);
+    public UploadStatus uploadImage(
+        @RequestParam(name= "image") MultipartFile file,
+        @RequestParam(name= "clientId", required = false) String clientId) {
+
+        return motionDetectionService.storeImage(file, clientId);
     }
 
     @RequestMapping(value = "/getImages", method = RequestMethod.GET)
@@ -77,12 +87,5 @@ public class HomeController {
     @ResponseBody
     public MonitoringConfig getConfig() {
         return new MonitoringConfig();
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/registerDevice", method = RequestMethod.GET)
-    public String registerDevice() {
-        // TODO: Implement
-        return null;
     }
 }

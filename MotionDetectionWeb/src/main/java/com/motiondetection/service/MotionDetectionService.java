@@ -1,5 +1,7 @@
 package com.motiondetection.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.motiondetection.enumeration.UploadStatus;
@@ -11,12 +13,17 @@ import com.motiondetection.service.dto.StoredImagesDto;
 public interface MotionDetectionService {
 
   /**
+   * @return list of client ids.
+   */
+  List<String> getClientList();
+
+  /**
    * Stores image to file system.
    * @param file the file to be stored.
    *
    * @return status.
    */
-  UploadStatus storeImage(MultipartFile file);
+  UploadStatus storeImage(MultipartFile file, String clientId);
 
   /**
    * Retrieve stored images according to the given search.

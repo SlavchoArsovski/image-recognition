@@ -27,6 +27,8 @@ public class AppRootConfig implements ApplicationContextAware {
 
         Resource resource = applicationContext.getResource("classpath:config.properties");
         propertyPlaceholderConfigurer.setLocations(resource);
+        propertyPlaceholderConfigurer.setIgnoreUnresolvablePlaceholders(true);
+        propertyPlaceholderConfigurer.setIgnoreResourceNotFound(false);
 
         return propertyPlaceholderConfigurer;
     }

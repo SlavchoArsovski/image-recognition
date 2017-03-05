@@ -6,7 +6,9 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,13 +48,23 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
   private static final Pattern fileNamePattern = Pattern.compile(IMAGE_FILE_REGEX);
 
 
-  @Value("${imageRecognition.imagesFolderPath}")
+  @Value("${motionDetection.imagesFolderPath}")
   private String imagesFolderPath;
+
+  @Value("${clientList}")
+  private String clientList;
 
   private ApplicationContext applicationContext;
 
   @Override
-  public UploadStatus storeImage(MultipartFile file) {
+  public List<String> getClientList() {
+    String[] clients = clientList.split(",");
+    List<String> clintList = new ArrayList<>(Arrays.asList(clients));
+    return clintList;
+  }
+
+  @Override
+  public UploadStatus storeImage(MultipartFile file, String clientId) {
 
     UploadStatus status;
     String imageType = getImageType(file);
@@ -64,10 +76,15 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     try {
 
       String imageDirectoryPath = String.format("%s%s", imagesFolderPath, currentDateFormatted);
+
+      if (StringUtils.isNotEmpty(clientId)) {
+        imageDirectoryPath = String.format("%s\\%s", imageDirectoryPath, clientId);
+      }
+
       File directory = new File(imageDirectoryPath);
       if (!directory.exists()){
         //noinspection ResultOfMethodCallIgnored
-        directory.mkdir();
+        directory.mkdirs();
       }
 
       String fileName = String.format("%s\\image-%s.%s", imageDirectoryPath, currentDateTimeFormatted, imageType);
@@ -151,6 +168,11 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
 
     if (StringUtils.isNotBlank(date) && date.matches("\\d{4}-\\d{2}-\\d{2}")) {
       directory = String.format("%s%s", imagesFolderPath, date);
+
+      String clientId = imageSearchDto.getClientId();
+      if (StringUtils.isNotBlank(clientId)) {
+        directory = String.format("%s\\%s", directory, clientId);
+      }
     } else {
       LocalDateTime currentDateTime = LocalDateTime.now();
       String currentDateFormatted = currentDateTime.format(dateFormatter);

@@ -1,16 +1,17 @@
 package motiondetection.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import motiondetection.cronjob.CronJobExecutor;
 import motiondetection.serviceclient.ClientComponents;
 import motiondetection.util.ImageReader;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
@@ -21,19 +22,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Spring configuration.
  */
 @Configuration
-@ComponentScan(
-    basePackageClasses = {ClientComponents.class, CronJobExecutor.class, ImageReader.class})
+@ComponentScan(basePackageClasses = { ClientComponents.class, CronJobExecutor.class, ImageReader.class })
 @EnableScheduling
-public class AppConfig {
-  
-  /**
-   * PropertySourcesPlaceholderConfigurer instance.
-   * 
-   * @return the propertyConfigurer
-   */
+public class AppConfig implements ApplicationContextAware {
+
+  private ApplicationContext appContext;
+
   @Bean
-  public PropertySourcesPlaceholderConfigurer propertyConfigIn() {
-    return new PropertySourcesPlaceholderConfigurer();
+  public PropertyPlaceholderConfigurer propertyPlaceholderConfigurerMock() {
+
+    PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+
+    Resource resource = appContext.getResource("classpath:config-mock.properties");
+    propertyPlaceholderConfigurer.setLocations(resource);
+
+    return propertyPlaceholderConfigurer;
   }
 
   @Bean
@@ -49,5 +52,9 @@ public class AppConfig {
 
     return restTemplate;
   }
-  
+
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.appContext = applicationContext;
+  }
 }
