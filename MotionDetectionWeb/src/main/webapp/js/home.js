@@ -72,19 +72,19 @@ $(document).ready(function() {
 
   }
 
-  setInterval(function(){ refreshImages(); }, 3000);
+  setInterval(function(){ refreshImages(); }, 5000);
 
   $(guiComponents.datePicker).datepicker({
     maxDate: new Date(),
     onSelect: function(dateText) {
-      $(guiComponents.selectedDate).text(this.value);
+      var dateFormatted = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
+      $(guiComponents.selectedDate).text(dateFormatted);
       refreshImages();
     }
   });
 
-  $(guiComponents.selectedDate).text($(guiComponents.datePicker).val());
-
-
+  $(guiComponents.selectedDate).text(
+      $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate')));
 
   $(guiComponents.sliderTimeRange).labeledslider({
     range: true,

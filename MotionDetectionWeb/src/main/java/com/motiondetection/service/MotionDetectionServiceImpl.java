@@ -1,9 +1,17 @@
 package com.motiondetection.service;
 
-import com.motiondetection.enumeration.UploadStatus;
-import com.motiondetection.service.dto.ImageSearchDto;
-import com.motiondetection.service.dto.StoredImagesDto;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.lang3.StringUtils;
@@ -15,17 +23,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.motiondetection.enumeration.UploadStatus;
+import com.motiondetection.service.dto.ImageSearchDto;
+import com.motiondetection.service.dto.StoredImagesDto;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * Implementation of {@link MotionDetectionService}.
@@ -34,19 +35,19 @@ import java.util.regex.Pattern;
 public class MotionDetectionServiceImpl implements MotionDetectionService, ApplicationContextAware {
 
   private static final String IMAGE_FILE_REGEX =
-      "image-\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}.(jpeg|jpg|gif|png|bmp)";
-
-  private static final String FULL_TIMESTAMP_PATTERN = "yyyy-MM-dd-HH-mm-ss";
-  private static final DateTimeFormatter fullTimeStampFormatter = DateTimeFormatter.ofPattern(FULL_TIMESTAMP_PATTERN);
+      "image-(\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2})\\.(jpeg|jpg|gif|png|bmp)";
 
   private static final String DATE_PATTERN = "yyyy-MM-dd";
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
+  private static final String FULL_TIMESTAMP_PATTERN = "yyyy-MM-dd-HH-mm-ss";
+  private static final DateTimeFormatter fullTimeStampFormatter = DateTimeFormatter.ofPattern(FULL_TIMESTAMP_PATTERN);
+
+  private static final Pattern fileNamePattern = Pattern.compile(IMAGE_FILE_REGEX);
+
+
   @Value("${imageRecognition.imagesFolderPath}")
   private String imagesFolderPath;
-
-  @Value("${imageRecognition.maxImages}")
-  private int maxImages;
 
   private ApplicationContext applicationContext;
 
@@ -110,13 +111,34 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
 
     if (files != null)  {
 
-      Arrays.sort(files, new ImageFilesComparator());
+      String date = String.format("%s-00-00-00", imageSearchDto.getDate());
+      LocalDateTime dateTime = LocalDateTime.parse(date, fullTimeStampFormatter );
+      LocalDateTime from = dateTime.plusHours(Long.valueOf(imageSearchDto.getTimeFrom()));
+      LocalDateTime to = dateTime.plusHours(Long.valueOf(imageSearchDto.getTimeTo()));
 
-      for (File file : files) {
-        String imageAsEncodedString = getImageAsEncodedString(file);
-        dto.addImageEncoded(imageAsEncodedString);
+      Arrays
+          .stream(files)
+          .filter(file -> {
+            Matcher matcher = fileNamePattern.matcher(file.getName());
+            if (matcher.matches()) {
+              LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
+
+              boolean isImageInSelectedDateTimeRange =
+                  (imageDateTime.isAfter(from) || imageDateTime.isEqual(from)) && imageDateTime.isBefore(to);
+
+              if (isImageInSelectedDateTimeRange) {
+                return true;
+              }
+
+            }
+            return false;
+          })
+          .sorted(new ImageFilesComparator())
+          .forEach(file -> {
+            String imageAsEncodedString = getImageAsEncodedString(file);
+            dto.addImageEncoded(imageAsEncodedString);
+          });
       }
-    }
 
     return dto;
   }
