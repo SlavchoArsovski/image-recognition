@@ -7,11 +7,11 @@ def postImage(imagePath):
     url = config['server']['url']
     headers = config['server']['headers']
     image = readImageAsByte(imagePath)
-   
+    clientid = config['clientId']
     files = {'image': (imagePath, image, headers)}
  
     try:
-        r = requests.post(url, files=files)
+        r = requests.post(url, files=files, data=[('clientId', clientid)])
         r.text
     except Exception as e: 
         print e
