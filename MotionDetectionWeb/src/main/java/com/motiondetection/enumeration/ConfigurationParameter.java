@@ -5,15 +5,15 @@ package com.motiondetection.enumeration;
  */
 public enum ConfigurationParameter {
   /** Resolution */
-  RESOLUTION_OPTIONS("resolution"),
+  RESOLUTION_OPTIONS("resolutionOptions"),
   /** Sensitivity options */
-  SENSITIVITY_OPTIONS("sensitivity"),
+  SENSITIVITY_OPTIONS("sensitivityOptions"),
   /** Minimum motion frames */
-  MINIMUM_MOTION_FRAMES_OPTIONS("minimumMotionFrames");
+  MINIMUM_MOTION_FRAMES_OPTIONS("minimumMotionFramesOptions");
 
   private String value;
 
-  private ConfigurationParameter(String value) {
+  ConfigurationParameter(String value) {
     this.value = value;
   }
 

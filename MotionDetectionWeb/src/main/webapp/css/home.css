@@ -27,8 +27,10 @@
 }
 
 h1 {
-  font-size: medium;
+  font-size: 36px;
   margin: 2px;
+  background-color: #eceeef;
+  padding: 30px;
 }
 
 p {
@@ -134,4 +136,13 @@ p {
   display: inline-block;
   margin-left: 1em;
   top: .6em;
+}
+
+.content {
+  padding-left: 20px;
+}
+
+.configLink {
+  font-size: 18px;
+  display: inline-block;
 }

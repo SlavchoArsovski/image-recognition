@@ -2,11 +2,12 @@ package com.motiondetection.web.controller;
 
 import com.motiondetection.enumeration.ConfigurationParameter;
 import com.motiondetection.service.ConfigurationService;
+import com.motiondetection.service.dto.MonitoringConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,25 +19,62 @@ import java.util.Map;
 @RequestMapping("/config")
 public class ConfigController {
 
+  public static final String CONFIG_PAGE_PATH = "configPage";
   @Autowired
   private ConfigurationService configurationService;
 
   @RequestMapping(method = RequestMethod.GET)
-  public ModelAndView getConfigPage() {
-    ModelAndView modelAndView = new ModelAndView();
-    Map<ConfigurationParameter, List<String>> configOptions = configurationService.getConfigOptions();
-    modelAndView.addObject(
+  public String getConfigPageForDeviceId(@RequestParam(required = false) String deviceId, Model model) {
+
+    // Dropdown options
+    initModel(model);
+
+    // Current selection values
+    model.addAttribute("configMap", configurationService.getConfigMap());
+
+    // Model init
+    MonitoringConfig config = null;
+    if (deviceId != null) {
+      config = configurationService.getMonitoringConfigForDeviceId(deviceId);
+    } else {
+      config = configurationService.getMonitoringConfigForDeviceId("realCameraRPi");
+    }
+    model.addAttribute("monitoringConfig", config);
+
+    return CONFIG_PAGE_PATH;
+  }
+
+  @RequestMapping(method = RequestMethod.POST)
+  public String saveConfig(
+          @ModelAttribute("monitoringConfig") MonitoringConfig updatedConfig,
+          BindingResult bindingResult,
+          Model model) {
+
+    initModel(model);
+
+    if (bindingResult.hasErrors()) {
+      return CONFIG_PAGE_PATH;
+    }
+
+    configurationService.updateDeviceConfig(updatedConfig);
+
+    model.addAttribute("monitoringConfig", updatedConfig);
+
+    return CONFIG_PAGE_PATH;
+  }
+
+  private void initModel(Model model) {
+    Map<ConfigurationParameter, List<Object>> configOptions = configurationService.getConfigOptions();
+    model.addAttribute(
             ConfigurationParameter.SENSITIVITY_OPTIONS.getValue(),
             configOptions.get(ConfigurationParameter.SENSITIVITY_OPTIONS));
-    modelAndView.addObject(
+    model.addAttribute(
             ConfigurationParameter.MINIMUM_MOTION_FRAMES_OPTIONS.getValue(),
             configOptions.get(ConfigurationParameter.MINIMUM_MOTION_FRAMES_OPTIONS));
-    modelAndView.addObject(
+    model.addAttribute(
             ConfigurationParameter.RESOLUTION_OPTIONS.getValue(),
             configOptions.get(ConfigurationParameter.RESOLUTION_OPTIONS));
-
-    modelAndView.setViewName("configPage");
-    return modelAndView;
+    model.addAttribute("devices", configurationService.getDeviceIds());
   }
 
 }

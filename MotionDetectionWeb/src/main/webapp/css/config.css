@@ -1,0 +1,96 @@
+.container {
+    padding: 0 20px 20px 20px;
+}
+
+.jumbotron {
+    padding-top: 10px;
+}
+
+.container form .form-control {
+    max-width: 160px;
+}
+
+label {
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+.header {
+    margin: 20px 0 40px 20px;
+    position: relative;
+}
+
+.headerTitle {
+    font-size: 36px;
+    color: #243259;
+}
+.deviceOptions {
+    margin-left: 20px;
+}
+
+#deviceId {
+    margin-left: 20px;
+    vertical-align: middle;
+    width: 160px;
+    position: absolute;
+    top: 12px;
+    left: 830px;
+}
+
+h3 {
+    margin: 0 20px 20px 20px;
+}
+
+select {
+    float: left;
+    display: inline-block;
+}
+
+.label {
+    display: inline-block;
+    margin-left: 20px;
+    color: #4b5257;
+}
+
+.form-group {
+    margin: 20px 0 20px 0;
+    padding: 20px;
+}
+
+.cTable {
+    display: table;
+}
+
+.configTableContainer {
+    margin-top: 20px;
+}
+
+.cTableRow {
+    display: table-row;
+    height: 120px;
+}
+
+.cTableHeading {
+    display: table-header-group;
+    background-color: #eceeef;
+}
+
+.cTableBody {
+    display: table-row-group;
+}
+
+.cTableFoot {
+    display: table-footer-group;
+}
+
+.cTableCell, .rTableHead {
+    display: table-cell;
+    padding-left: 20px;
+    width: 522px;
+}
+
+.submit-button {
+    margin-top: 20px;
+    padding: 15px;
+    float: right;
+}
