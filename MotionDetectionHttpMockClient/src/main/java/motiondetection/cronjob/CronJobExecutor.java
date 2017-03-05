@@ -2,10 +2,9 @@ package motiondetection.cronjob;
 
 import motiondetection.model.MonitoringConfig;
 import motiondetection.serviceclient.DataService;
-import motiondetection.serviceclient.DataServiceImpl;
 import motiondetection.util.ImageReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -24,7 +23,7 @@ import java.util.Random;
 @PropertySource("classpath:/config.properties")
 public class CronJobExecutor {
 
-  private Logger logger = LoggerFactory.getLogger(CronJobExecutor.class);
+  private Logger logger = Logger.getLogger(CronJobExecutor.class);
   
   @Autowired
   private DataService dataService;
@@ -44,7 +43,7 @@ public class CronJobExecutor {
   @Scheduled(cron = "${cron.timer}")
   public void pushDataToRemoteWS() {
 
-    logger.info("Performing task - get config {}", configUrl);
+    logger.info(String.format("Performing task - get config %s", configUrl));
     MonitoringConfig config = dataService.getConfig(configUrl);
 
     MultiValueMap<String, Object> imageData = imageReader.readImage(
@@ -52,7 +51,7 @@ public class CronJobExecutor {
             "images");
 
     if (imageData != null) {
-      logger.info("Performing task - data push {}", destinationURL);
+      logger.info(String.format("Performing task - data push %s", destinationURL));
       dataService.pushData(imageData, destinationURL);
     } else {
       System.out.println("No image data found");

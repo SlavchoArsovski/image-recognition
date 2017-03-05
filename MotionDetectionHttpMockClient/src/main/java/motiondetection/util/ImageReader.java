@@ -1,8 +1,8 @@
 package motiondetection.util;
 
 import motiondetection.cronjob.CronJobExecutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -15,12 +15,12 @@ import org.springframework.util.MultiValueMap;
 @Component
 public class ImageReader {
 
-  private Logger logger = LoggerFactory.getLogger(CronJobExecutor.class);
+  private Logger logger = Logger.getLogger(CronJobExecutor.class);
 
   public MultiValueMap<String, Object> readImage(String imageFileName, String imageFileLocation) {
 
     String imageResourcePath = String.format("%s/%s", imageFileLocation, imageFileName);
-    logger.info("Reading image: ", imageResourcePath);
+    logger.info("Reading image: " + imageResourcePath);
 
     Resource resource = new ClassPathResource(imageResourcePath);
 
