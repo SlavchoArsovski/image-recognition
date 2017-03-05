@@ -1,3 +1,5 @@
+clientId:
+    raspberry-pi-5807beb6
 server:
     url: http://169.254.73.225:5556/motion-detection/home/upload
     headers: image/jpeg

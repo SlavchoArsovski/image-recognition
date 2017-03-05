@@ -4,7 +4,6 @@ from config import getConfig
 config = getConfig()
 
 def postImage(imagePath):
-    print imagePath
     url = config['server']['url']
     headers = config['server']['headers']
     image = readImageAsByte(imagePath)
