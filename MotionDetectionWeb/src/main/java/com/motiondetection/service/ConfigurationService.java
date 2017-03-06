@@ -45,7 +45,11 @@ public class ConfigurationService {
    * @return the device-specific config data
    */
   public MonitoringConfig getMonitoringConfigForDeviceId(String id) {
-    return configMap.get(id);
+    MonitoringConfig monitoringConfig = configMap.get(id);
+    if (monitoringConfig == null) {
+      monitoringConfig = new MonitoringConfig();
+    }
+    return monitoringConfig;
   }
 
   /**

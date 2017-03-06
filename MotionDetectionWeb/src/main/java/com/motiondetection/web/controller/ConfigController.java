@@ -87,7 +87,7 @@ public class ConfigController {
 
   @RequestMapping(value = "/getConfig", method = RequestMethod.GET)
   @ResponseBody
-  public MonitoringConfigOutDto getConfig(@RequestParam String deviceId) {
+  public MonitoringConfigOutDto getConfig(@RequestParam(required = false) String deviceId) {
     MonitoringConfig config = configurationService.getMonitoringConfigForDeviceId(deviceId);
     return configurationService.mapMonitoringConfig(config);
   }
