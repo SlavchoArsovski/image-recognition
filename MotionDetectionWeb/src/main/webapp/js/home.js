@@ -106,9 +106,21 @@ $(document).ready(function() {
         }
 
         $(guiComponents.motionDetectionImage).click(function(event) {
-          selected = $(event.target).data('index');
-          var selectedImgSrc = $(event.target).attr('src');
-          $(guiComponents.selectedImage).attr('src', selectedImgSrc);
+
+          var productOverlay = $('.product-image-overlay');
+          var productOverlayImage = $('.product-image-overlay img');
+
+          var productImageSource = $(this).attr('src');
+
+          productOverlayImage.attr('src', productImageSource);
+          productOverlay.fadeIn(100);
+          $('body').css('overflow', 'hidden');
+
+          $('.product-image-overlay-close').click(function() {
+            productOverlay.fadeOut(100);
+            $('body').css('overflow', 'auto');
+          });
+
         });
       }
     });
@@ -186,6 +198,8 @@ $(document).ready(function() {
       }
     }
   });
+
+  $('body').append('<div class="product-image-overlay"><span class="product-image-overlay-close">x</span><img src="" /></div>');
 
   refreshImages();
 });

@@ -67,7 +67,6 @@
         <div id="slider-range"></div>
       </div>
     </div>
-    <img id="selected_image" class="selected-image" src="" />
   </div>
 
   <div class="image-view-wrapper">
