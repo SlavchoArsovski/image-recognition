@@ -28,13 +28,26 @@ label {
     margin-left: 20px;
 }
 
-#deviceIdSelect {
+.container form #deviceIdSelect {
     margin-left: 20px;
     vertical-align: middle;
     width: 260px;
+    max-width: 260px;
     position: absolute;
     top: 12px;
-    left: 830px;
+    left: 735px;
+}
+
+.container form #homeLink {
+    margin-left: 20px;
+    vertical-align: middle;
+    width: 260px;
+    max-width: 260px;
+    position: absolute;
+    top: 22px;
+    left: 316px;
+    font-size:18px;
+    font-weight:bold;
 }
 
 h3 {
