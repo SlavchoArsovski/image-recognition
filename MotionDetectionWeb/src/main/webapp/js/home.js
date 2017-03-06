@@ -4,7 +4,6 @@ var guiComponents = {
   datePicker: '#datepicker',
   selectedDate: '#selectedDate',
   motionDetectionImage: '.motion-detection',
-  selectedImage: '#selected_image',
   imageViewContainer: '.image-view-container',
   selectClientDropDown: '#selectClientDropDown'
 };
@@ -13,7 +12,6 @@ $(document).ready(function() {
 
   $.ajaxSetup({ cache: false });
 
-  var selected = -1;
   var pageNumber = 0;
   var lastUpdate = '';
   var numberOfPages = 1;
@@ -100,10 +98,6 @@ $(document).ready(function() {
 
           $(guiComponents.imageViewContainer).append(img);
         });
-
-        if (selected === -1 && response.imagesEncoded.length > 1) {
-          $(guiComponents.selectedImage).attr('src', 'data:image/jpeg;base64,' + response.imagesEncoded[0]);
-        }
 
         $(guiComponents.motionDetectionImage).click(function(event) {
 
