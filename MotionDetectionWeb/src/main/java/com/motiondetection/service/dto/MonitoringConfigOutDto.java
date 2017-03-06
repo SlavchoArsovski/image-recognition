@@ -3,24 +3,25 @@ package com.motiondetection.service.dto;
 /**
  * Camera monitoring configuration DTO.
  */
-public class MonitoringConfig {
+public class MonitoringConfigOutDto {
 
   private String deviceId;
 
-  private Float sensitivity;
+  private Float delta_thresh;
   private Integer minimumMotionFrames;
-  private String resolution;
+  private int resolutionWidth;
+  private int resolutionHeight;
 
   private String statusFontColor;
   private String timestampFontColor;
   private String motionIndicatorColor;
 
   // Default values
-  public MonitoringConfig() {
-    this.sensitivity = 0.5f;
+  public MonitoringConfigOutDto() {
+    this.delta_thresh = 0.5f;
     this.minimumMotionFrames = 4;
-    this.resolution = "768x540";
-
+    this.resolutionWidth = 768;
+    this.resolutionHeight = 540;
   }
 
   public String getDeviceId() {
@@ -31,28 +32,12 @@ public class MonitoringConfig {
     this.deviceId = deviceId;
   }
 
-  public Float getSensitivity() {
-    return sensitivity;
-  }
-
-  public void setSensitivity(Float sensitivity) {
-    this.sensitivity = sensitivity;
-  }
-
   public Integer getMinimumMotionFrames() {
     return minimumMotionFrames;
   }
 
   public void setMinimumMotionFrames(Integer minimumMotionFrames) {
     this.minimumMotionFrames = minimumMotionFrames;
-  }
-
-  public String getResolution() {
-    return resolution;
-  }
-
-  public void setResolution(String resolution) {
-    this.resolution = resolution;
   }
 
   public String getStatusFontColor() {
@@ -77,5 +62,29 @@ public class MonitoringConfig {
 
   public void setMotionIndicatorColor(String motionIndicatorColor) {
     this.motionIndicatorColor = motionIndicatorColor;
+  }
+
+  public Float getDelta_thresh() {
+    return delta_thresh;
+  }
+
+  public void setDelta_thresh(Float delta_thresh) {
+    this.delta_thresh = delta_thresh;
+  }
+
+  public int getResolutionWidth() {
+    return resolutionWidth;
+  }
+
+  public void setResolutionWidth(int resolutionWidth) {
+    this.resolutionWidth = resolutionWidth;
+  }
+
+  public int getResolutionHeight() {
+    return resolutionHeight;
+  }
+
+  public void setResolutionHeight(int resolutionHeight) {
+    this.resolutionHeight = resolutionHeight;
   }
 }

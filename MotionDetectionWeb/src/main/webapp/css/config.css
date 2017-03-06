@@ -28,10 +28,10 @@ label {
     margin-left: 20px;
 }
 
-#deviceId {
+#deviceIdSelect {
     margin-left: 20px;
     vertical-align: middle;
-    width: 160px;
+    width: 260px;
     position: absolute;
     top: 12px;
     left: 830px;
