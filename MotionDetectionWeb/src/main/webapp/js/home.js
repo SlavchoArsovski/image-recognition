@@ -14,6 +14,37 @@ $(document).ready(function() {
   $.ajaxSetup({ cache: false });
 
   var selected = -1;
+  var pageNumber = 0;
+  var lastUpdate = '';
+  var numberOfPages = 1;
+
+  function checkLastUpdate() {
+
+    var clientId = $(guiComponents.selectClientDropDown).find(":selected").val();
+
+    var data = {
+      clientId: clientId
+    };
+
+    $.ajax({
+      dataType: "json",
+      type: 'GET',
+      url: motionDetectionApp.conf.contextPath + '/home/getLastUpdate',
+      cache: false,
+      data: data,
+      success: function(response) {
+        if (response.lastUpdate !== lastUpdate) {
+          pageNumber = 0;
+          lastUpdate = response.lastUpdate;
+
+          $(guiComponents.motionDetectionImage).remove();
+
+          refreshImages();
+        }
+      }
+    });
+
+  }
 
   function refreshImages() {
 
@@ -34,7 +65,9 @@ $(document).ready(function() {
       date: date,
       timeFrom: timeFrom,
       timeTo: timeTo,
-      clientId: clientId
+      clientId: clientId,
+      pageNumber: pageNumber,
+      lastUpdate: lastUpdate
     };
 
     $.ajax({
@@ -45,7 +78,13 @@ $(document).ready(function() {
       data: data,
       success: function(response) {
 
-        $(guiComponents.motionDetectionImage).remove();
+        if (response.lastUpdate !== lastUpdate) {
+          $(guiComponents.motionDetectionImage).remove();
+          pageNumber = 0;
+          lastUpdate = response.lastUpdate;
+        }
+
+        numberOfPages = response.numberOfPages;
 
         $(response.imagesEncoded).each(function(index, element) {
 
@@ -74,13 +113,14 @@ $(document).ready(function() {
 
   }
 
-  setInterval(function(){ refreshImages(); }, 5000);
+  setInterval(function(){ checkLastUpdate(); }, 1000);
 
   $(guiComponents.datePicker).datepicker({
     maxDate: new Date(),
     onSelect: function(dateText) {
       var dateFormatted = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
       $(guiComponents.selectedDate).text(dateFormatted);
+      pageNumber = 0;
       refreshImages();
     }
   });
@@ -110,6 +150,7 @@ $(document).ready(function() {
 
     },
     stop: function(event, ui) {
+      pageNumber = 0;
       refreshImages();
     }
   });
@@ -127,7 +168,17 @@ $(document).ready(function() {
   $(guiComponents.selectedTimeRange).text(timeFrom + ' - ' + timeTo + ' hour');
 
   $(guiComponents.selectClientDropDown).change(function() {
+    pageNumber = 0;
     refreshImages();
+  });
+
+  $('.image-view-container').on('scroll', function(event) {
+
+    if($(this).scrollTop() + $(this).innerHeight() + 1 >= $(this)[0].scrollHeight) {
+      if (pageNumber < numberOfPages)
+      pageNumber++;
+      refreshImages();
+    }
   });
 
   refreshImages();

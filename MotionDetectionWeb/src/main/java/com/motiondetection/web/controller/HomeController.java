@@ -6,6 +6,7 @@ import java.util.List;
 import com.motiondetection.enumeration.UploadStatus;
 import com.motiondetection.service.MotionDetectionService;
 import com.motiondetection.service.dto.ImageSearchDto;
+import com.motiondetection.service.dto.LastUpdateDto;
 import com.motiondetection.service.dto.MonitoringConfig;
 import com.motiondetection.service.dto.StoredImagesDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,19 +65,35 @@ public class HomeController {
         return motionDetectionService.storeImage(file, clientId);
     }
 
+    @RequestMapping(value = "/getLastUpdate", method = RequestMethod.GET)
+    @ResponseBody
+    public LastUpdateDto getImages(@RequestParam(name= "clientId", required = false) String clientId) {
+
+        LastUpdateDto lastUpdateDto = new LastUpdateDto();
+
+        String lastUpdate = motionDetectionService.getLastUpdate(clientId);
+        lastUpdateDto.setLastUpdate(lastUpdate);
+
+        return lastUpdateDto;
+    }
+
     @RequestMapping(value = "/getImages", method = RequestMethod.GET)
     @ResponseBody
     public StoredImagesDto getImages(
         @RequestParam(name= "date", required = false) String date,
         @RequestParam(name= "timeFrom", required = false) String timeFrom,
         @RequestParam(name= "timeTo", required = false) String timeTo,
-        @RequestParam(name= "clientId", required = false) String clientId) {
+        @RequestParam(name= "clientId", required = false) String clientId,
+        @RequestParam(name= "pageNumber", required = false) Long pageNumber,
+        @RequestParam(name= "lastUpdate", required = false) String lastUpdate) {
 
         ImageSearchDto imageSearchDto = new ImageSearchDto();
         imageSearchDto.setDate(date);
         imageSearchDto.setTimeFrom(timeFrom);
         imageSearchDto.setTimeTo(timeTo);
         imageSearchDto.setClientId(clientId);
+        imageSearchDto.setPageNumber(pageNumber);
+        imageSearchDto.setLastUpdate(lastUpdate);
 
         StoredImagesDto storedImages = motionDetectionService.getStoredImages(imageSearchDto);
 

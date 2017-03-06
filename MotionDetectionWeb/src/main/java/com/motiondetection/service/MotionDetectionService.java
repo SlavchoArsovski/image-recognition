@@ -33,4 +33,6 @@ public interface MotionDetectionService {
    */
   StoredImagesDto getStoredImages(ImageSearchDto imageSearchDto);
 
+  String getLastUpdate(String clientId);
+
 }

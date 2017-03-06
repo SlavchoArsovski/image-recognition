@@ -9,6 +9,8 @@ public class ImageSearchDto {
   private String timeFrom;
   private String timeTo;
   private String clientId;
+  private Long pageNumber;
+  private String lastUpdate;
 
   public String getDate() {
     return date;
@@ -33,5 +35,18 @@ public class ImageSearchDto {
   }
   public void setClientId(String clientId) {
     this.clientId = clientId;
+  }
+  public Long getPageNumber() {
+    return pageNumber;
+  }
+  public void setPageNumber(Long pageNumber) {
+    this.pageNumber = pageNumber;
+  }
+
+  public String getLastUpdate() {
+    return lastUpdate;
+  }
+  public void setLastUpdate(String lastUpdate) {
+    this.lastUpdate = lastUpdate;
   }
 }

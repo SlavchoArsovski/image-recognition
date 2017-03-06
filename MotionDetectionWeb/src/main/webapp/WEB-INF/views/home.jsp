@@ -70,7 +70,10 @@
     <img id="selected_image" class="selected-image" src="" />
   </div>
 
-  <div class="image-view-container"></div>
+  <div class="image-view-wrapper">
+    <div class="image-view-container"></div>
+  </div>
+
 </div>
 </body>
 </html>

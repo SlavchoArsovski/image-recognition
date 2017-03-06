@@ -3,17 +3,24 @@
   float: left;
 }
 
-.image-view-container {
+.image-view-wrapper {
   width: 65%;
+  height: 450px;
   float: left;
-  height: 640px;
+}
+
+.image-view-container {
+  height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
+  padding: 0;
+  margin: 0;
+  border: none;
 }
 
 .motion-detection {
   width: 200px;
-  height: auto;
+  height: 150px;
   float: left;
   margin: 9px;
   cursor: pointer;
