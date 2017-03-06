@@ -159,6 +159,7 @@ p {
   background: rgba(0, 0, 0, 0.9);
   z-index: 9999;
   display: none;
+  cursor: pointer;
 }
 
 .product-image-overlay .product-image-overlay-close {

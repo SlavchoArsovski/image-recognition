@@ -31,7 +31,7 @@
 
   <script>
     motionDetectionApp = {
-      conf : {
+      conf: {
         contextPath: '${SERVLET_CONTEXT_PATH}'
       }
     }
@@ -75,5 +75,11 @@
   </div>
 
 </div>
+
+<div class="product-image-overlay">
+  <%--<span class="product-image-overlay-close">x</span>--%>
+  <img src=""/>
+  </div>
+
 </body>
 </html>

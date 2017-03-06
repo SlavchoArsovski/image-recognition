@@ -116,7 +116,12 @@ $(document).ready(function() {
           productOverlay.fadeIn(100);
           $('body').css('overflow', 'hidden');
 
-          $('.product-image-overlay-close').click(function() {
+          // $('.product-image-overlay-close').click(function() {
+          //   productOverlay.fadeOut(100);
+          //   $('body').css('overflow', 'auto');
+          // });
+
+          productOverlay.click(function() {
             productOverlay.fadeOut(100);
             $('body').css('overflow', 'auto');
           });
@@ -198,8 +203,6 @@ $(document).ready(function() {
       }
     }
   });
-
-  $('body').append('<div class="product-image-overlay"><span class="product-image-overlay-close">x</span><img src="" /></div>');
 
   refreshImages();
 });
