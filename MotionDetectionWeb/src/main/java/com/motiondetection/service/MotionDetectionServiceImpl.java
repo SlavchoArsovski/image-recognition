@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 
@@ -190,35 +190,14 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
       LocalDateTime from = dateTime.plusHours(Long.valueOf(timeFrom));
       LocalDateTime to = dateTime.plusHours(Long.valueOf(timeTo));
 
-      Arrays
-          .stream(files)
-          .filter(file -> {
+      List<File> filesFiltered = filterFiles(pageNumber, files, from, to);
 
-            Matcher matcher = fileNamePattern.matcher(file.getName());
-
-            if (matcher.matches()) {
-              LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
-
-              boolean isImageInSelectedDateTimeRange =
-                  (imageDateTime.isAfter(from) || imageDateTime.isEqual(from)) && imageDateTime.isBefore(to);
-
-
-              if (isImageInSelectedDateTimeRange) {
-                return true;
-              }
-
-            }
-            return false;
-          })
-          .sorted(new ImageFilesComparator())
-          .skip(pageNumber * pageSize)
-          .limit(pageSize)
+      filesFiltered
           .forEach(file -> {
             String imageAsEncodedString = getImageAsEncodedString(file);
             dto.addImageEncoded(imageAsEncodedString);
           });
-    }
-
+      }
 
     return dto;
   }
@@ -242,6 +221,31 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     }
 
     return directory;
+  }
+
+  private List<File> filterFiles(Long pageNumber, File[] files, LocalDateTime from, LocalDateTime to) {
+
+    return Arrays
+        .stream(files)
+        .filter(file -> {
+          Matcher matcher = fileNamePattern.matcher(file.getName());
+
+          if (matcher.matches()) {
+            LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
+
+            boolean isImageInSelectedDateTimeRange = (imageDateTime.isAfter(from) || imageDateTime.isEqual(from))
+                && imageDateTime.isBefore(to);
+
+            if (isImageInSelectedDateTimeRange) {
+              return true;
+            }
+          }
+          return false;
+        })
+        .sorted(new ImageFilesComparator())
+        .skip(pageNumber * pageSize)
+        .limit(pageSize)
+        .collect(Collectors.toList());
   }
 
   private String getImageAsEncodedString(File file) {
