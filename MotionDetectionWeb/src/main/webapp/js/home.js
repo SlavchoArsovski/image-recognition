@@ -17,6 +17,7 @@ $(document).ready(function() {
   var pageNumber = 0;
   var lastUpdate = '';
   var numberOfPages = 1;
+  var filterChanged = false;
 
   function checkLastUpdate() {
 
@@ -78,10 +79,11 @@ $(document).ready(function() {
       data: data,
       success: function(response) {
 
-        if (response.lastUpdate !== lastUpdate) {
+        if (response.lastUpdate !== lastUpdate || filterChanged === true) {
           $(guiComponents.motionDetectionImage).remove();
           pageNumber = 0;
           lastUpdate = response.lastUpdate;
+          filterChanged = false;
         }
 
         numberOfPages = response.numberOfPages;
@@ -121,6 +123,7 @@ $(document).ready(function() {
       var dateFormatted = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
       $(guiComponents.selectedDate).text(dateFormatted);
       pageNumber = 0;
+      filterChanged = true;
       refreshImages();
     }
   });
@@ -151,6 +154,7 @@ $(document).ready(function() {
     },
     stop: function(event, ui) {
       pageNumber = 0;
+      filterChanged = true;
       refreshImages();
     }
   });
@@ -169,15 +173,17 @@ $(document).ready(function() {
 
   $(guiComponents.selectClientDropDown).change(function() {
     pageNumber = 0;
+    filterChanged = true;
     refreshImages();
   });
 
   $('.image-view-container').on('scroll', function(event) {
 
     if($(this).scrollTop() + $(this).innerHeight() + 1 >= $(this)[0].scrollHeight) {
-      if (pageNumber < numberOfPages)
-      pageNumber++;
-      refreshImages();
+      if (pageNumber < numberOfPages) {
+        pageNumber++;
+        refreshImages();
+      }
     }
   });
 

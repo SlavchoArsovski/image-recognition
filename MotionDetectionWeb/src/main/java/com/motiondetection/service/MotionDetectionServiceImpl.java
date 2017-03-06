@@ -190,9 +190,6 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
       LocalDateTime from = dateTime.plusHours(Long.valueOf(timeFrom));
       LocalDateTime to = dateTime.plusHours(Long.valueOf(timeTo));
 
-      System.out.println(from);
-      System.out.println(to);
-
       Arrays
           .stream(files)
           .filter(file -> {
