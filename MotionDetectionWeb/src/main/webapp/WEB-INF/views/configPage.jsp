@@ -45,6 +45,9 @@
     <form method="GET" action="config" name="updateDeviceId" id="updateDeviceId">
       <div class="header">
         <div class="headerTitle">Device configuration</div>
+        <div>
+          <a id="homeLink" href="home">Home</a>
+        </div>
         <div class="deviceOptions">
           <c:if test="${not empty devices}">
             <select
