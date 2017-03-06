@@ -21,25 +21,41 @@
   <link href="${configCss}" rel="stylesheet"/>
   <script src="${jqueryJs}" type="application/javascript"></script>
   <script src="${bootstrapJs}" type="application/javascript"></script>
+  <script type="text/javascript">
+    function setFormAction(formId) {
+      var action = '/config';
+      var selectedDeviceId = document.getElementById('deviceIdSelect').value;
+      if (selectedDeviceId) {
+        document.getElementById(formId).action = action + '?deviceId=' + selectedDeviceId;
+      } else {
+        document.getElementById(formId).action = action;
+      }
+      document.getElementsByName('deviceId')[0].value=selectedDeviceId;
+      document.getElementsByName('deviceId')[1].value=selectedDeviceId;
+    }
+    function submitFormWithId(formId) {
+      setFormAction(formId);
+      document.getElementById(formId).submit();
+    }
+  </script>
 </head>
-
 <body>
 <div class="container">
   <div class="starter-template jumbotron">
-    <form:form method="POST" modelAttribute="monitoringConfig" action="/config">
+    <form method="GET" action="/config" name="updateDeviceId" id="updateDeviceId">
       <div class="header">
         <div class="headerTitle">Device configuration</div>
         <div class="deviceOptions">
           <c:if test="${not empty devices}">
             <select
-                id="deviceId"
-                name="deviceId"
-                class="form-control"
-                title="Select the device id"
-                required>
+                    id="deviceIdSelect"
+                    class="form-control"
+                    title="Select the device id"
+                    onchange="javascript:submitFormWithId('updateDeviceId')"
+                    required>
               <option value="" disabled selected>Device ID</option>
               <c:forEach var="deviceIdOption" items="${devices}">
-                <option value="${deviceIdOption}" ${deviceIdOption == deviceId ? 'selected' : ''}>
+                <option value="${deviceIdOption}" ${deviceIdOption == monitoringConfig.deviceId ? 'selected' : ''}>
                     ${deviceIdOption}
                 </option>
               </c:forEach>
@@ -47,6 +63,9 @@
           </c:if>
         </div>
       </div>
+      <input type="hidden" name="deviceId" />
+    </form>
+    <form:form method="POST" modelAttribute="monitoringConfig" action="/config">
       <div class="cTable table configTableContainer">
         <div class="cTableRow">
           <div class="cTableCell tableCell">
@@ -70,7 +89,7 @@
                           required="true"
                       >
                         <c:forEach var="sensitivityOption" items="${sensitivityOptions}">
-                          <option ${sensitivityOption == sensitivity ? 'selected' : ''} value="${sensitivityOption}">
+                          <option ${sensitivityOption == monitoringConfig.sensitivity ? 'selected' : ''} value="${sensitivityOption}">
                               ${sensitivityOption}
                           </option>
                         </c:forEach>
@@ -93,7 +112,7 @@
                           title="Image resolution"
                           required="true">
                         <c:forEach var="resolutionOption" items="${resolutionOptions}">
-                          <option ${resolutionOption == resolution ? 'selected' : ''} value="${resolutionOption}">
+                          <option ${resolutionOption == monitoringConfig.resolution ? 'selected' : ''} value="${resolutionOption}">
                               ${resolutionOption}
                           </option>
                         </c:forEach>
@@ -117,7 +136,7 @@
                           required="true">
                         <c:forEach var="minimumMotionFramesOption" items="${minimumMotionFramesOptions}">
                           <option
-                            ${minimumMotionFramesOption == minimumMotionFrames ? 'selected' : ''}
+                            ${minimumMotionFramesOption == monitoringConfig.minimumMotionFrames ? 'selected' : ''}
                               value="${minimumMotionFramesOption}">
                               ${minimumMotionFramesOption}
                           </option>
@@ -201,6 +220,7 @@
           </div>
         </div>
       </div>
+      <form:input type="hidden" path="deviceId" name="deviceId" id="deviceId"/>
     </form:form>
   </div>
 </div>

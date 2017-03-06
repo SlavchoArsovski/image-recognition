@@ -2,9 +2,13 @@ package com.motiondetection.service;
 
 import com.motiondetection.enumeration.ConfigurationParameter;
 import com.motiondetection.service.dto.MonitoringConfig;
+import com.motiondetection.service.dto.MonitoringConfigOutDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +21,22 @@ public class ConfigurationService {
 
   private Map<String, MonitoringConfig> configMap;
 
-  public ConfigurationService() {
+  @Value("${clientList}")
+  private String clientList;
+
+  private List<String> getClientList() {
+    String[] clients = clientList.split(",");
+    return new ArrayList<>(Arrays.asList(clients));
+  }
+
+  @PostConstruct
+  public void init() {
     configMap = new HashMap<>();
-    MonitoringConfig configRealCamera = new MonitoringConfig();
-    configRealCamera.setDeviceId("realCameraRPi");
-    configMap.put("realCameraRPi", configRealCamera);
-    MonitoringConfig configMockCamera1 = new MonitoringConfig();
-    configMockCamera1.setDeviceId("mockCamera1");
-    configMap.put("mockCamera1", configMockCamera1);
+    for(String deviceId : getClientList()) {
+      MonitoringConfig config = new MonitoringConfig();
+      config.setDeviceId(deviceId);
+      configMap.put(deviceId, config);
+    }
   }
 
   /**
@@ -47,7 +59,7 @@ public class ConfigurationService {
    * Returns a list of ids of the registered devices.
    */
   public List<String> getDeviceIds() {
-    return new ArrayList<String>(configMap.keySet());
+    return new ArrayList<>(configMap.keySet());
   }
 
   public void updateDeviceConfig(MonitoringConfig newConfig) {
@@ -104,5 +116,22 @@ public class ConfigurationService {
     sensitivityOptions.add(4.5f);
     sensitivityOptions.add(5.0f);
     return sensitivityOptions;
+  }
+
+  /**
+   * Maps the config to the out dto.
+   */
+  public MonitoringConfigOutDto mapMonitoringConfig(MonitoringConfig inDto) {
+    MonitoringConfigOutDto outDto = new MonitoringConfigOutDto();
+    outDto.setDelta_thresh(inDto.getSensitivity());
+    outDto.setDeviceId(inDto.getDeviceId());
+    outDto.setMinimumMotionFrames(inDto.getMinimumMotionFrames());
+    outDto.setMotionIndicatorColor(inDto.getMotionIndicatorColor());
+    String[] resolution = inDto.getResolution().split("x");
+    outDto.setResolutionHeight(Integer.valueOf(resolution[0]));
+    outDto.setResolutionWidth(Integer.valueOf(resolution[1]));
+    outDto.setStatusFontColor(inDto.getStatusFontColor());
+    outDto.setTimestampFontColor(inDto.getTimestampFontColor());
+    return outDto;
   }
 }

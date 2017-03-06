@@ -3,12 +3,14 @@ package com.motiondetection.web.controller;
 import com.motiondetection.enumeration.ConfigurationParameter;
 import com.motiondetection.service.ConfigurationService;
 import com.motiondetection.service.dto.MonitoringConfig;
+import com.motiondetection.service.dto.MonitoringConfigOutDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import java.util.Map;
 public class ConfigController {
 
   public static final String CONFIG_PAGE_PATH = "configPage";
+
   @Autowired
   private ConfigurationService configurationService;
 
@@ -37,7 +40,12 @@ public class ConfigController {
     if (deviceId != null) {
       config = configurationService.getMonitoringConfigForDeviceId(deviceId);
     } else {
-      config = configurationService.getMonitoringConfigForDeviceId("realCameraRPi");
+      List<MonitoringConfig> configList = new ArrayList<>(configurationService.getConfigMap().values());
+      if (configList.get(0) == null) {
+        config = new MonitoringConfig();
+      } else {
+        config = configList.get(0);
+      }
     }
     model.addAttribute("monitoringConfig", config);
 
@@ -77,4 +85,10 @@ public class ConfigController {
     model.addAttribute("devices", configurationService.getDeviceIds());
   }
 
+  @RequestMapping(value = "/getConfig", method = RequestMethod.GET)
+  @ResponseBody
+  public MonitoringConfigOutDto getConfig(@RequestParam String deviceId) {
+    MonitoringConfig config = configurationService.getMonitoringConfigForDeviceId(deviceId);
+    return configurationService.mapMonitoringConfig(config);
+  }
 }
