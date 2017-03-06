@@ -23,7 +23,7 @@
   <script src="${bootstrapJs}" type="application/javascript"></script>
   <script type="text/javascript">
     function setFormAction(formId) {
-      var action = '/config';
+      var action = 'config';
       var selectedDeviceId = document.getElementById('deviceIdSelect').value;
       if (selectedDeviceId) {
         document.getElementById(formId).action = action + '?deviceId=' + selectedDeviceId;
@@ -42,7 +42,7 @@
 <body>
 <div class="container">
   <div class="starter-template jumbotron">
-    <form method="GET" action="/config" name="updateDeviceId" id="updateDeviceId">
+    <form method="GET" action="config" name="updateDeviceId" id="updateDeviceId">
       <div class="header">
         <div class="headerTitle">Device configuration</div>
         <div class="deviceOptions">
@@ -65,7 +65,7 @@
       </div>
       <input type="hidden" name="deviceId" />
     </form>
-    <form:form method="POST" modelAttribute="monitoringConfig" action="/config">
+    <form:form method="POST" modelAttribute="monitoringConfig" action="config">
       <div class="cTable table configTableContainer">
         <div class="cTableRow">
           <div class="cTableCell tableCell">

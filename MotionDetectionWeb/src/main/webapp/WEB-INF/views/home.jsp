@@ -40,7 +40,10 @@
 </head>
 
 <body>
-<h1>Motion Detection</h1>
+<h1>
+  Motion Detection
+  <a class="configLink" href="config" target="_blank">Config</a>
+</h1>
 <div class="content">
   <div class="selectionContainer">
 
@@ -54,8 +57,6 @@
         </c:forEach>
       </select>
     </div>
-
-    <a class="configLink" href="/config">Config</a>
 
     <p>Selected date: <label id="selectedDate"></label></p>
     <div id="datepicker">

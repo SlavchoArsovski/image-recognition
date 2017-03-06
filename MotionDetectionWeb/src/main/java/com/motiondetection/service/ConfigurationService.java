@@ -128,8 +128,8 @@ public class ConfigurationService {
     outDto.setMinimumMotionFrames(inDto.getMinimumMotionFrames());
     outDto.setMotionIndicatorColor(inDto.getMotionIndicatorColor());
     String[] resolution = inDto.getResolution().split("x");
-    outDto.setResolutionHeight(Integer.valueOf(resolution[0]));
-    outDto.setResolutionWidth(Integer.valueOf(resolution[1]));
+    outDto.setResolutionHeight(Integer.valueOf(resolution[1]));
+    outDto.setResolutionWidth(Integer.valueOf(resolution[0]));
     outDto.setStatusFontColor(inDto.getStatusFontColor());
     outDto.setTimestampFontColor(inDto.getTimestampFontColor());
     return outDto;

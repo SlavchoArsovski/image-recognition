@@ -5,7 +5,7 @@
 
 .image-view-wrapper {
   width: 65%;
-  height: 600px;
+  height: 650px;
   float: left;
 }
 
@@ -30,10 +30,10 @@
 
 
 h1 {
-  font-size: 36px;
+  font-size: 30px;
   margin: 2px;
   background-color: #eceeef;
-  padding: 30px;
+  padding: 5px 30px;
 }
 
 p {
