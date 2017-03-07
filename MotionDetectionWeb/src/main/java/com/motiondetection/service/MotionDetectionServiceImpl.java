@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -214,22 +215,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     List<File> filesFiltered =
         Arrays
             .stream(files)
-            .filter(file -> {
-              Matcher matcher = fileNamePattern.matcher(file.getName());
-
-              if (matcher.matches()) {
-                LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
-
-                boolean isImageInSelectedDateTimeRange =
-                    (imageDateTime.isAfter(dateTimeFrom) || imageDateTime.isEqual(dateTimeFrom))
-                        && imageDateTime.isBefore(dateTimeFromTo);
-
-                if (isImageInSelectedDateTimeRange) {
-                  return true;
-                }
-              }
-              return false;
-            })
+            .filter(fileInTimeRangePredicate(dateTimeFrom, dateTimeFromTo))
             .sorted(new ImageFilesComparator())
             .skip(pageNumber * pageSize)
             .limit(pageSize)
@@ -253,6 +239,25 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     }
 
     return pageNumber;
+  }
+
+  private Predicate<File> fileInTimeRangePredicate(LocalDateTime dateTimeFrom, LocalDateTime dateTimeFromTo) {
+    return file -> {
+      Matcher matcher = fileNamePattern.matcher(file.getName());
+
+      if (matcher.matches()) {
+        LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
+
+        boolean isImageInSelectedDateTimeRange =
+            (imageDateTime.isAfter(dateTimeFrom) || imageDateTime.isEqual(dateTimeFrom))
+                && imageDateTime.isBefore(dateTimeFromTo);
+
+        if (isImageInSelectedDateTimeRange) {
+          return true;
+        }
+      }
+      return false;
+    };
   }
 
   private String getImageAsEncodedString(File file) {

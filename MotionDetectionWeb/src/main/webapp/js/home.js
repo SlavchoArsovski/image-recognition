@@ -110,11 +110,6 @@ $(document).ready(function() {
           productOverlay.fadeIn(100);
           $('body').css('overflow', 'hidden');
 
-          // $('.product-image-overlay-close').click(function() {
-          //   productOverlay.fadeOut(100);
-          //   $('body').css('overflow', 'auto');
-          // });
-
           productOverlay.click(function() {
             productOverlay.fadeOut(100);
             $('body').css('overflow', 'auto');
