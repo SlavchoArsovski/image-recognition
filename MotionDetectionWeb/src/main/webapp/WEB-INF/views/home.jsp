@@ -77,7 +77,6 @@
 </div>
 
 <div class="product-image-overlay">
-  <%--<span class="product-image-overlay-close">x</span>--%>
   <img src=""/>
   </div>
 

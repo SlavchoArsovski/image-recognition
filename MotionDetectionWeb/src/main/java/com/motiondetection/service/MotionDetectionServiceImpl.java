@@ -50,6 +50,8 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
 
   private static final Pattern fileNamePattern = Pattern.compile(IMAGE_FILE_REGEX);
 
+  private static final String NO_CLIENT = "no_client";
+  private static final String CLIENT_LIST_SEPARATOR = ",";
 
   @Value("${motionDetection.imagesFolderPath}")
   private String imagesFolderPath;
@@ -74,14 +76,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
       lastUpdates.put(client, lastUpdate);
     });
 
-    lastUpdates.put("no_client", lastUpdate);
-  }
-
-  @Override
-  public List<String> getClientList() {
-    String[] clients = clientList.split(",");
-    List<String> clintList = new ArrayList<>(Arrays.asList(clients));
-    return clintList;
+    lastUpdates.put(NO_CLIENT, lastUpdate);
   }
 
   @Override
@@ -116,7 +111,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
 
       status = UploadStatus.SUCCESS;
 
-      String lastUpdateKey = StringUtils.isNotBlank(clientId) ? clientId : "no_client";
+      String lastUpdateKey = StringUtils.isNotBlank(clientId) ? clientId : NO_CLIENT;
       lastUpdates.put(lastUpdateKey, LocalDateTime.now().format(fullTimeStampFormatter));
     } catch (IOException e) {
       e.printStackTrace();
@@ -143,22 +138,12 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
   @Override
   public StoredImagesDto getStoredImages(ImageSearchDto imageSearchDto) {
 
-    Long pageNumber = imageSearchDto.getPageNumber();
+    StoredImagesDto storedImagesDto = new StoredImagesDto();
 
-    if (pageNumber == null || pageNumber < 0) {
-      pageNumber = 0L;
-    }
+    String lastUpdate = getLastUpdateForClient(imageSearchDto.getClientId());
+    storedImagesDto.setLastUpdate(lastUpdate);
 
-    String clientId = imageSearchDto.getClientId();
-    String lastUpdateKey = StringUtils.isNotBlank(clientId) ? clientId : "no_client";
-
-    if (!StringUtils.equals(imageSearchDto.getLastUpdate(), lastUpdates.get(lastUpdateKey))) {
-      pageNumber = 0L;
-    }
-
-    StoredImagesDto dto = new StoredImagesDto();
-    dto.setLastUpdate(lastUpdates.get(lastUpdateKey));
-
+    // search images for given client and date
     String imageDirectory = resolveImageDirectory(imageSearchDto);
     File storedImagesDir = new File(imageDirectory);
     FileFilter regexFileFilter = new RegexFileFilter(IMAGE_FILE_REGEX);
@@ -166,40 +151,20 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
 
     if (files != null)  {
 
-      int numberOfPages = files.length / (int) pageSize;
+      int numberOfPages = calculateNumberOfPages(files);
+      storedImagesDto.setNumberOfPages(numberOfPages);
 
-      if (files.length % (int) pageSize != 0) {
-        numberOfPages += 1;
-      }
-
-      dto.setNumberOfPages(numberOfPages);
-
-      String date = String.format("%s-00-00-00", imageSearchDto.getDate());
-      LocalDateTime dateTime = LocalDateTime.parse(date, fullTimeStampFormatter);
-
-      String timeFrom = imageSearchDto.getTimeFrom();
-      if (StringUtils.isBlank(timeFrom)) {
-        timeFrom = "00";
-      }
-
-      String timeTo = imageSearchDto.getTimeTo();
-      if (StringUtils.isBlank(timeTo)) {
-        timeTo = "24";
-      }
-
-      LocalDateTime from = dateTime.plusHours(Long.valueOf(timeFrom));
-      LocalDateTime to = dateTime.plusHours(Long.valueOf(timeTo));
-
-      List<File> filesFiltered = filterFiles(pageNumber, files, from, to);
+      // filter files according to the filters (time of the day, page number)
+      List<File> filesFiltered = filterFiles(files, imageSearchDto);
 
       filesFiltered
           .forEach(file -> {
             String imageAsEncodedString = getImageAsEncodedString(file);
-            dto.addImageEncoded(imageAsEncodedString);
+            storedImagesDto.addImageEncoded(imageAsEncodedString);
           });
       }
 
-    return dto;
+    return storedImagesDto;
   }
 
   private String resolveImageDirectory(ImageSearchDto imageSearchDto) {
@@ -223,29 +188,71 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
     return directory;
   }
 
-  private List<File> filterFiles(Long pageNumber, File[] files, LocalDateTime from, LocalDateTime to) {
+  private int calculateNumberOfPages(File[] files) {
 
-    return Arrays
-        .stream(files)
-        .filter(file -> {
-          Matcher matcher = fileNamePattern.matcher(file.getName());
+    int numberOfPages = files.length / (int) pageSize;
 
-          if (matcher.matches()) {
-            LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
+    if (files.length % (int) pageSize != 0) {
+      numberOfPages += 1;
+    }
+    return numberOfPages;
+  }
 
-            boolean isImageInSelectedDateTimeRange = (imageDateTime.isAfter(from) || imageDateTime.isEqual(from))
-                && imageDateTime.isBefore(to);
+  private List<File> filterFiles(File[] files, ImageSearchDto imageSearchDto) {
 
-            if (isImageInSelectedDateTimeRange) {
-              return true;
-            }
-          }
-          return false;
-        })
-        .sorted(new ImageFilesComparator())
-        .skip(pageNumber * pageSize)
-        .limit(pageSize)
-        .collect(Collectors.toList());
+    Long pageNumber = calculatePageNumber(imageSearchDto);
+
+    String date = String.format("%s-00-00-00", imageSearchDto.getDate());
+    LocalDateTime dateTime = LocalDateTime.parse(date, fullTimeStampFormatter);
+
+    String timeFrom = StringUtils.isNotBlank(imageSearchDto.getTimeFrom()) ? imageSearchDto.getTimeFrom() : "00";
+    String timeTo = StringUtils.isNotBlank(imageSearchDto.getTimeTo()) ? imageSearchDto.getTimeTo() : "24";
+
+    LocalDateTime dateTimeFrom = dateTime.plusHours(Long.valueOf(timeFrom));
+    LocalDateTime dateTimeFromTo = dateTime.plusHours(Long.valueOf(timeTo));
+
+    List<File> filesFiltered =
+        Arrays
+            .stream(files)
+            .filter(file -> {
+              Matcher matcher = fileNamePattern.matcher(file.getName());
+
+              if (matcher.matches()) {
+                LocalDateTime imageDateTime = LocalDateTime.parse(matcher.group(1), fullTimeStampFormatter);
+
+                boolean isImageInSelectedDateTimeRange =
+                    (imageDateTime.isAfter(dateTimeFrom) || imageDateTime.isEqual(dateTimeFrom))
+                        && imageDateTime.isBefore(dateTimeFromTo);
+
+                if (isImageInSelectedDateTimeRange) {
+                  return true;
+                }
+              }
+              return false;
+            })
+            .sorted(new ImageFilesComparator())
+            .skip(pageNumber * pageSize)
+            .limit(pageSize)
+            .collect(Collectors.toList());
+
+    return filesFiltered;
+  }
+
+  private Long calculatePageNumber(ImageSearchDto imageSearchDto) {
+
+    Long pageNumber = imageSearchDto.getPageNumber();
+    String clientId = imageSearchDto.getClientId();
+    String clientLastUpdate = imageSearchDto.getLastUpdate();
+    String lastUpdateOnServer = getLastUpdateForClient(clientId);
+
+    boolean shouldResetPageNumber =
+        pageNumber == null || pageNumber < 0 || !StringUtils.equals(clientLastUpdate, lastUpdateOnServer);
+
+    if (shouldResetPageNumber) {
+      pageNumber = 0L;
+    }
+
+    return pageNumber;
   }
 
   private String getImageAsEncodedString(File file) {
@@ -273,10 +280,18 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
   }
 
   @Override
-  public String getLastUpdate(String clientId) {
-    String lastUpdateKey = StringUtils.isNotBlank(clientId) ? clientId : "no_client";
-    return lastUpdates.get(lastUpdateKey);
+  public List<String> getClientList() {
+    String[] clients = clientList.split(CLIENT_LIST_SEPARATOR);
+    List<String> clintList = new ArrayList<>(Arrays.asList(clients));
+    return clintList;
   }
+
+  @Override
+  public String getLastUpdateForClient(String clientId) {
+    String key = StringUtils.isNotBlank(clientId) ? clientId : NO_CLIENT;
+    return lastUpdates.get(key);
+  }
+
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     this.applicationContext = applicationContext;

@@ -12,10 +12,6 @@ import com.motiondetection.service.dto.StoredImagesDto;
  */
 public interface MotionDetectionService {
 
-  /**
-   * @return list of client ids.
-   */
-  List<String> getClientList();
 
   /**
    * Stores image to file system.
@@ -33,6 +29,17 @@ public interface MotionDetectionService {
    */
   StoredImagesDto getStoredImages(ImageSearchDto imageSearchDto);
 
-  String getLastUpdate(String clientId);
+  /**
+   * Get timestamp of the last update for given client id.
+   *
+   * @param clientId the client id.
+   * @return the last update timestamp as string.
+   */
+  String getLastUpdateForClient(String clientId);
+
+  /**
+   * @return list of client ids.
+   */
+  List<String> getClientList();
 
 }

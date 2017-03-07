@@ -69,7 +69,7 @@ public class HomeController {
 
         LastUpdateDto lastUpdateDto = new LastUpdateDto();
 
-        String lastUpdate = motionDetectionService.getLastUpdate(clientId);
+        String lastUpdate = motionDetectionService.getLastUpdateForClient(clientId);
         lastUpdateDto.setLastUpdate(lastUpdate);
 
         return lastUpdateDto;
