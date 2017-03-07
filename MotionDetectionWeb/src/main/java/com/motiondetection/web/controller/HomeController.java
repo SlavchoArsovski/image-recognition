@@ -37,11 +37,21 @@ public class HomeController {
     @Autowired
     private MotionDetectionService motionDetectionService;
 
+    /**
+     * Binds {@link ByteArrayMultipartFileEditor}.
+     *
+     * @param binder the web data binder.
+     */
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
     }
 
+    /**
+     * Handler for the motion detection home page.
+     *
+     * @return model and view.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView home() {
 
@@ -54,6 +64,13 @@ public class HomeController {
         return modelAndView;
     }
 
+    /**
+     * Upload image captured from client.
+     *
+     * @param file the image uploaded from the client.
+     * @param clientId the client id.
+     * @return the upload status.
+     */
     @RequestMapping(value="/upload", method = RequestMethod.POST)
     @ResponseBody
     public UploadStatus uploadImage(
@@ -63,9 +80,16 @@ public class HomeController {
         return motionDetectionService.storeImage(file, clientId);
     }
 
+    /**
+     * Returns the timestamp of last uploaded image for specific client.
+     *
+     * @param clientId the client id.
+     * @return {@link LastUpdateDto}.
+     */
     @RequestMapping(value = "/getLastUpdate", method = RequestMethod.GET)
     @ResponseBody
-    public LastUpdateDto getImages(@RequestParam(name= "clientId", required = false) String clientId) {
+    public LastUpdateDto getLastUpdateForGivenClient(
+        @RequestParam(name= "clientId", required = false) String clientId) {
 
         LastUpdateDto lastUpdateDto = new LastUpdateDto();
 
@@ -75,6 +99,18 @@ public class HomeController {
         return lastUpdateDto;
     }
 
+    /**
+     * Get images according to the filters from the GUI.
+     *
+     * @param date the date of the image.
+     * @param timeFrom the time from of the day range.
+     * @param timeTo the time to of the day range.
+     * @param clientId the client id.
+     * @param pageNumber the page number.
+     * @param lastUpdate last update received by the client.
+     *
+     * @return {@link StoredImagesDto} view model.
+     */
     @RequestMapping(value = "/getImages", method = RequestMethod.GET)
     @ResponseBody
     public StoredImagesDto getImages(
