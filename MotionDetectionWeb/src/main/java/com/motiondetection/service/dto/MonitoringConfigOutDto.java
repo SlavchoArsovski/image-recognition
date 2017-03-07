@@ -7,8 +7,8 @@ public class MonitoringConfigOutDto {
 
   private String deviceId;
 
-  private Float delta_thresh;
-  private Integer minimumMotionFrames;
+  private String delta_thresh;
+  private String minimumMotionFrames;
   private int resolutionWidth;
   private int resolutionHeight;
 
@@ -16,12 +16,18 @@ public class MonitoringConfigOutDto {
   private String timestampFontColor;
   private String motionIndicatorColor;
 
+  private Boolean active;
+
   // Default values
   public MonitoringConfigOutDto() {
-    this.delta_thresh = 0.5f;
-    this.minimumMotionFrames = 4;
+    this.delta_thresh = "0.5";
+    this.minimumMotionFrames = "4";
     this.resolutionWidth = 768;
     this.resolutionHeight = 540;
+    this.active = true;
+    this.statusFontColor = "#DD4444";
+    this.timestampFontColor = "#44DD44";
+    this.motionIndicatorColor = "#4444DD";
   }
 
   public String getDeviceId() {
@@ -32,12 +38,12 @@ public class MonitoringConfigOutDto {
     this.deviceId = deviceId;
   }
 
-  public Integer getMinimumMotionFrames() {
+  public String getMinimumMotionFrames() {
     return minimumMotionFrames;
   }
 
   public void setMinimumMotionFrames(Integer minimumMotionFrames) {
-    this.minimumMotionFrames = minimumMotionFrames;
+    this.minimumMotionFrames = String.valueOf(minimumMotionFrames);
   }
 
   public String getStatusFontColor() {
@@ -64,12 +70,12 @@ public class MonitoringConfigOutDto {
     this.motionIndicatorColor = motionIndicatorColor;
   }
 
-  public Float getDelta_thresh() {
+  public String getDelta_thresh() {
     return delta_thresh;
   }
 
   public void setDelta_thresh(Float delta_thresh) {
-    this.delta_thresh = delta_thresh;
+    this.delta_thresh = String.valueOf(delta_thresh);
   }
 
   public int getResolutionWidth() {
@@ -86,5 +92,13 @@ public class MonitoringConfigOutDto {
 
   public void setResolutionHeight(int resolutionHeight) {
     this.resolutionHeight = resolutionHeight;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 }

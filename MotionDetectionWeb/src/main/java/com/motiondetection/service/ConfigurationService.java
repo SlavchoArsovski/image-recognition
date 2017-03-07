@@ -136,6 +136,7 @@ public class ConfigurationService {
     outDto.setResolutionWidth(Integer.valueOf(resolution[0]));
     outDto.setStatusFontColor(inDto.getStatusFontColor());
     outDto.setTimestampFontColor(inDto.getTimestampFontColor());
+    outDto.setActive(inDto.getActive());
     return outDto;
   }
 }

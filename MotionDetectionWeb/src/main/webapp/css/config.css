@@ -10,7 +10,7 @@
     max-width: 160px;
 }
 
-label {
+.formLabel {
     margin-top: 20px;
     font-size: 24px;
 }
@@ -103,7 +103,29 @@ select {
 }
 
 .submit-button {
-    margin-top: 20px;
     padding: 15px;
     float: right;
+    vertical-align: bottom;
+}
+
+#checkboxActive {
+    font-size: 120%;
+    margin-left: 20px;
+    vertical-align: middle;
+}
+
+.checkboxActive {
+    font-size:22px;
+    font-weight:bold;
+    vertical-align: top;
+}
+
+input[type=checkbox]
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 10px;
 }

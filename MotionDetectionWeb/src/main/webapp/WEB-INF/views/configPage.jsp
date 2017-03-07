@@ -79,7 +79,7 @@
               <div class="cTableRow">
                 <div class="cTableCell">
                   <c:if test="${not empty sensitivityOptions}">
-                    <label for="sensitivity">
+                    <label for="sensitivity" class="formLabel">
                       Sensitivity
                     </label>
                     <div>
@@ -104,7 +104,7 @@
               <div class="cTableRow">
                 <div class="cTableCell">
                   <c:if test="${not empty resolutionOptions}">
-                    <label for="resolution">
+                    <label for="resolution" class="formLabel">
                       Resolution
                     </label>
                     <div>
@@ -127,7 +127,7 @@
               <div class="cTableRow">
                 <div class="cTableCell">
                   <c:if test="${not empty minimumMotionFramesOptions}">
-                    <label for="minimumMotionFrames">
+                    <label for="minimumMotionFrames" class="formLabel">
                       Minimum motion frames
                     </label>
                     <div>
@@ -158,7 +158,7 @@
               </div>
               <div class="cTableRow">
                 <div class="cTableCell">
-                  <label id="statusFontColorLabel" for="statusFontColor">
+                  <label id="statusFontColorLabel" for="statusFontColor" class="formLabel">
                     Status font color
                   </label>
                   <div>
@@ -176,7 +176,7 @@
               </div>
               <div class="cTableRow">
                 <div class="cTableCell">
-                  <label id="timestampFontColorLabel" for="timestampFontColor">
+                  <label id="timestampFontColorLabel" for="timestampFontColor" class="formLabel">
                     Timestamp font color
                   </label>
                   <div>
@@ -194,7 +194,7 @@
               </div>
               <div class="cTableRow">
                 <div class="cTableCell">
-                  <label id="motionIndicatorColorLabel" for="motionIndicatorColor">
+                  <label id="motionIndicatorColorLabel" for="motionIndicatorColor" class="formLabel">
                     Motion detected frame color
                   </label>
                   <div>
@@ -213,8 +213,12 @@
             </div>
           </div>
         </div>
-        <div class="cTableRow">
+        <div class="cTableFoot">
           <div class="cTableCell">
+            <div class="checkboxActive">
+              <label for="checkboxActive" label="checkboxActiveLabel">Active</label>
+              <form:checkbox path="active" id="checkboxActive"/>
+            </div>
           </div>
           <div class="cTableCell">
             <button type="submit" class="btn-info submit-button">

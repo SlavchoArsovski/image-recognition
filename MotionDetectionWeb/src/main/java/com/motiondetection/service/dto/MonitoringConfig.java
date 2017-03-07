@@ -15,12 +15,17 @@ public class MonitoringConfig {
   private String timestampFontColor;
   private String motionIndicatorColor;
 
+  private Boolean active;
+
   // Default values
   public MonitoringConfig() {
     this.sensitivity = 0.5f;
     this.minimumMotionFrames = 4;
     this.resolution = "768x540";
-
+    this.active = true;
+    this.statusFontColor = "#DD4444";
+    this.timestampFontColor = "#44DD44";
+    this.motionIndicatorColor = "#4444DD";
   }
 
   public String getDeviceId() {
@@ -77,5 +82,13 @@ public class MonitoringConfig {
 
   public void setMotionIndicatorColor(String motionIndicatorColor) {
     this.motionIndicatorColor = motionIndicatorColor;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 }
