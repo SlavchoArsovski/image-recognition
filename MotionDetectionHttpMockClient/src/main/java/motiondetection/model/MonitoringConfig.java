@@ -20,6 +20,7 @@ public class MonitoringConfig {
   private float deltaThresh;
   private int resolutionWidth;
   private int resolutionHeight;
+  private Boolean active;
 
   // Default values
   public MonitoringConfig() {
@@ -29,6 +30,7 @@ public class MonitoringConfig {
     this.deltaThresh = 3.5f;
     this.resolutionWidth = 768;
     this.resolutionHeight = 540;
+    this.active = Boolean.TRUE;
   }
 
   @Override
@@ -40,6 +42,7 @@ public class MonitoringConfig {
     string.append("deltaThresh: " + this.deltaThresh + "\n");
     string.append("resolutionWidth: " + this.resolutionWidth + "\n");
     string.append("resolutionHeight: " + this.resolutionHeight + "\n");
+    string.append("active: " + this.active + "\n");
     return string.toString();
   }
 
@@ -89,5 +92,12 @@ public class MonitoringConfig {
 
   public void setResolutionHeight(int resolutionHeight) {
     this.resolutionHeight = resolutionHeight;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 }
