@@ -8,14 +8,17 @@ var guiComponents = {
   selectClientDropDown: '#selectClientDropDown'
 };
 
+// initialize state
+var state = {
+  pageNumber: 0,
+  numberOfPages: 1,
+  lastUpdate: '',
+  filterChanged: false
+};
+
 $(document).ready(function() {
 
   $.ajaxSetup({ cache: false });
-
-  var pageNumber = 0;
-  var lastUpdate = '';
-  var numberOfPages = 1;
-  var filterChanged = false;
 
   function checkLastUpdate() {
 
@@ -32,9 +35,9 @@ $(document).ready(function() {
       cache: false,
       data: data,
       success: function(response) {
-        if (response.lastUpdate !== lastUpdate) {
-          pageNumber = 0;
-          lastUpdate = response.lastUpdate;
+        if (response.lastUpdate !== state.lastUpdate) {
+          state.pageNumber = 0;
+          state.lastUpdate = response.lastUpdate;
 
           $(guiComponents.motionDetectionImage).remove();
 
@@ -65,8 +68,8 @@ $(document).ready(function() {
       timeFrom: timeFrom,
       timeTo: timeTo,
       clientId: clientId,
-      pageNumber: pageNumber,
-      lastUpdate: lastUpdate
+      pageNumber: state.pageNumber,
+      lastUpdate: state.lastUpdate
     };
 
     $.ajax({
@@ -77,14 +80,14 @@ $(document).ready(function() {
       data: data,
       success: function(response) {
 
-        if (response.lastUpdate !== lastUpdate || filterChanged === true) {
+        if (response.lastUpdate !== state.lastUpdate || state.filterChanged === true) {
           $(guiComponents.motionDetectionImage).remove();
-          pageNumber = 0;
-          lastUpdate = response.lastUpdate;
-          filterChanged = false;
+          state.pageNumber = 0;
+          state.lastUpdate = response.lastUpdate;
+          state.filterChanged = false;
         }
 
-        numberOfPages = response.numberOfPages;
+        state.numberOfPages = response.numberOfPages;
 
         $(response.imagesEncoded).each(function(index, element) {
 
@@ -128,9 +131,7 @@ $(document).ready(function() {
     onSelect: function(dateText) {
       var dateFormatted = $.datepicker.formatDate('yy-mm-dd', $(guiComponents.datePicker).datepicker('getDate'));
       $(guiComponents.selectedDate).text(dateFormatted);
-      pageNumber = 0;
-      filterChanged = true;
-      refreshImages();
+      filterChange();
     }
   });
 
@@ -159,9 +160,7 @@ $(document).ready(function() {
 
     },
     stop: function(event, ui) {
-      pageNumber = 0;
-      filterChanged = true;
-      refreshImages();
+      filterChange();
     }
   });
 
@@ -178,20 +177,26 @@ $(document).ready(function() {
   $(guiComponents.selectedTimeRange).text(timeFrom + ' - ' + timeTo + ' hour');
 
   $(guiComponents.selectClientDropDown).change(function() {
-    pageNumber = 0;
-    filterChanged = true;
-    refreshImages();
+    filterChange();
   });
 
   $('.image-view-container').on('scroll', function(event) {
 
     if($(this).scrollTop() + $(this).innerHeight() + 1 >= $(this)[0].scrollHeight) {
-      if (pageNumber < numberOfPages) {
-        pageNumber++;
+      if (state.pageNumber < state.numberOfPages) {
+        state.pageNumber++;
         refreshImages();
       }
     }
   });
+
+  function filterChange() {
+
+    state.pageNumber = 0;
+    state.filterChanged = true;
+
+    refreshImages();
+  }
 
   refreshImages();
 });
