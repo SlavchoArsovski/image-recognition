@@ -19,7 +19,7 @@ public class MonitoringConfig {
 
   // Default values
   public MonitoringConfig() {
-    this.sensitivity = 0.5f;
+    this.sensitivity = 3.5f;
     this.minimumMotionFrames = 4;
     this.resolution = "768x540";
     this.active = true;
