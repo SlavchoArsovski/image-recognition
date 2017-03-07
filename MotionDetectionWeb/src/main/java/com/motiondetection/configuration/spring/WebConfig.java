@@ -20,32 +20,32 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackageClasses = { WebComponents.class })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    public static final String VIEWS_PATH = "/WEB-INF/views/";
+  public static final String VIEWS_PATH = "/WEB-INF/views/";
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**").addResourceLocations("/css/");
-        registry.addResourceHandler("/js/**").addResourceLocations("/js/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/images/");
-        registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
-    }
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+    registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+    registry.addResourceHandler("/images/**").addResourceLocations("/images/");
+    registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
+  }
 
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
+  @Bean
+  public InternalResourceViewResolver viewResolver() {
 
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix(VIEWS_PATH);
-        viewResolver.setSuffix(".jsp");
+    viewResolver.setViewClass(JstlView.class);
+    viewResolver.setPrefix(VIEWS_PATH);
+    viewResolver.setSuffix(".jsp");
 
-        return viewResolver;
-    }
+    return viewResolver;
+  }
 
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setDefaultEncoding("utf-8");
-        return resolver;
-    }
+  @Bean
+  public CommonsMultipartResolver multipartResolver() {
+    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+    resolver.setDefaultEncoding("utf-8");
+    return resolver;
+  }
 }

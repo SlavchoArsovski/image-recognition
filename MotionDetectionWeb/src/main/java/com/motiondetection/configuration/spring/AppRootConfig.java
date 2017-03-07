@@ -15,26 +15,26 @@ import org.springframework.core.io.Resource;
  * App root spring configuration.
  */
 @Configuration
-@ComponentScan( basePackageClasses = { ServiceComponents.class })
+@ComponentScan(basePackageClasses = { ServiceComponents.class })
 public class AppRootConfig implements ApplicationContextAware {
 
-    private ApplicationContext applicationContext;
+  private ApplicationContext applicationContext;
 
-    @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+  @Bean
+  public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
 
-        PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+    PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
 
-        Resource resource = applicationContext.getResource("classpath:config.properties");
-        propertyPlaceholderConfigurer.setLocations(resource);
-        propertyPlaceholderConfigurer.setIgnoreUnresolvablePlaceholders(true);
-        propertyPlaceholderConfigurer.setIgnoreResourceNotFound(false);
+    Resource resource = applicationContext.getResource("classpath:config.properties");
+    propertyPlaceholderConfigurer.setLocations(resource);
+    propertyPlaceholderConfigurer.setIgnoreUnresolvablePlaceholders(true);
+    propertyPlaceholderConfigurer.setIgnoreResourceNotFound(false);
 
-        return propertyPlaceholderConfigurer;
-    }
+    return propertyPlaceholderConfigurer;
+  }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }
 }
