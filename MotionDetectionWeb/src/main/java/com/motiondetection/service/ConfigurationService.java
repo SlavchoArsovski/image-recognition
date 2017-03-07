@@ -91,7 +91,7 @@ public class ConfigurationService {
     resolutionOptions.add("480x300");
     resolutionOptions.add("512x342");
     resolutionOptions.add("640x380");
-    resolutionOptions.add("768x480");
+    resolutionOptions.add("768x540");
     resolutionOptions.add("800x600");
     resolutionOptions.add("960x660");
     resolutionOptions.add("1024x768");
