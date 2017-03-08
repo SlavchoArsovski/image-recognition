@@ -1,13 +1,16 @@
 clientId:
     raspberry-pi-5807beb6
+#config_url: http://169.254.249.77:8080/motion-detection/config/getConfig?deviceId=raspberry-pi-5807beb6
+#upload_url: http://169.254.249.77:8080/motion-detection/home/upload
 server:
-    url: http://169.254.73.225:5556/motion-detection/home/upload
+    upload_url: http://169.254.73.225:5556/motion-detection/home/upload
     headers: image/jpeg
+    config_url: http://169.254.73.225:5556/motion-detection/config/getConfig?deviceId=raspberry-pi-5807beb6
 storage_base_path:
     /home/pi/Desktop/MotionDetection/storage
 # Should the security feed be displayed locally
 show_video:
-    true
+   false
 # Time between two uploads
 min_upload_seconds:
     3.0

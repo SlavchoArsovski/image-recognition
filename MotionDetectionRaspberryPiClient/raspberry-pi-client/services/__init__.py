@@ -4,16 +4,24 @@ from config import getConfig
 config = getConfig()
 
 def postImage(imagePath):
-    url = config['server']['url']
+    url = config['server']['upload_url']
     headers = config['server']['headers']
     image = readImageAsByte(imagePath)
-    clientid = config['clientId']
     files = {'image': (imagePath, image, headers)}
- 
+
     try:
-        r = requests.post(url, files=files, data=[('clientId', clientid)])
+        r = requests.post(url, files=files, data=[('clientId', config['clientId'])])
         r.text
-    except Exception as e: 
+    except Exception as e:
+        print e
+
+def getConfigFromServer():
+    url = config['server']['config_url']
+    print "Fetching config from url:", url
+    try:
+        r = requests.get(url)
+        return r.json()
+    except Exception as e:
         print e
 
 def readImageAsByte(target):

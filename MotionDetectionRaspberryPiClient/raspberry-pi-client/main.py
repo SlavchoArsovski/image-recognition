@@ -2,7 +2,7 @@
 from pyimagesearch.tempimage import TempImage
 from picamera.array import PiRGBArray
 from picamera import PiCamera
-from services import postImage
+from services import postImage, getConfigFromServer
 from config import getConfig
 import argparse
 import warnings
@@ -12,9 +12,20 @@ import json
 import time
 import cv2
 
-
+print "Initializing..."
 warnings.filterwarnings("ignore")
 conf = getConfig()
+confFromServer = getConfigFromServer()
+
+if confFromServer["delta_thresh"] is not None:
+	conf["delta_thresh"] = confFromServer["delta_thresh"]
+
+if confFromServer["resolutionWidth"] is not None:
+	conf["resolution"]["width"] = confFromServer["resolutionWidth"]
+
+if confFromServer["resolutionHeight"] is not None:
+	conf["resolution"]["height"] = confFromServer["resolutionHeight"]
+
 client = None
 
 # Initialize the camera object
@@ -33,8 +44,24 @@ avg = None
 lastUploaded = datetime.datetime.now()
 motionCounter = 0
 
+configUpdateCounter = 50;
+
+active = True
+
 # Start capturing frames with the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+	configUpdateCounter -= 1
+
+	if configUpdateCounter == 0:
+		configUpdateCounter = 50;
+		confFromServer = getConfigFromServer()
+		if confFromServer["delta_thresh"] is not None:
+			conf["delta_thresh"] = confFromServer["delta_thresh"]
+		if confFromServer["minimumMotionFrames"] is not None:
+			conf["min_motion_frames"] = confFromServer["minimumMotionFrames"]
+		if confFromServer["active"] is not None:
+			active = confFromServer["active"]
+
 
 	# Get the current array that represents the image
 	frame = f.array
@@ -87,25 +114,25 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	statusColor = (155, 205, 75)
 	if text == "Motion detected":
 		statusColor = (75, 75, 205)
-	
+
 	# Draw the text and timestamp on the frame
 	cv2.putText(
-                frame,
-                "Status: {}".format(text),
-                (15, 20),
+		frame,
+		"Status: {}".format(text),
+		(15, 20),
 		cv2.FONT_HERSHEY_SIMPLEX,
-                0.7,
-                statusColor,
-                2)
-	
+		0.7,
+		statusColor,
+		2)
+
 	cv2.putText(
-                frame,
-                ts,
-                (10, frame.shape[0] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX,
+		frame,
+		ts,
+		(10, frame.shape[0] - 10),
+		cv2.FONT_HERSHEY_SIMPLEX,
 		0.35,
-                (205, 155, 75),
-                1)
+		(205, 155, 75),
+		1)
 
 	# Check to see if there was new motion detected
 	if text == "Motion detected":
@@ -117,12 +144,14 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 			# Check to see if the number of frames with consistent motion is high enough
 			if motionCounter >= conf["min_motion_frames"]:
+				# check to see if dropbox sohuld be used
 				t = TempImage(conf["storage_base_path"])
 				cv2.imwrite(t.path, frame)
-				print "[INFO] Uploading image. Path: {path}".format(path=t.path)
-				postImage(t.path)
+				if active == True:
+					print "[INFO] Uploading image. Path: {path}".format(path=t.path)
+					postImage(t.path)
 				t.cleanup()
-				
+
 				# Upload the last uploaded timestamp
 				lastUploaded = timestamp
 				# Reset the motion counter for the next capture
@@ -131,7 +160,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# Otherwise: No new motion has been detected
 	else:
 		motionCounter = 0
- 
+
 	if conf["show_video"]:
 		# Display the security feed
 		cv2.imshow("Camera Feed", frame)
