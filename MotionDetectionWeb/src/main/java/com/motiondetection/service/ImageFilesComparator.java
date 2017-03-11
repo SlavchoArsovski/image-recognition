@@ -12,4 +12,8 @@ public class ImageFilesComparator implements Comparator<File> {
   public int compare(File f1, File f2) {
     return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
   }
+
+  public static ImageFilesComparator createInstance() {
+    return new ImageFilesComparator();
+  }
 }

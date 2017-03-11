@@ -216,7 +216,7 @@ public class MotionDetectionServiceImpl implements MotionDetectionService, Appli
         Arrays
             .stream(files)
             .filter(fileInTimeRangePredicate(dateTimeFrom, dateTimeFromTo))
-            .sorted(new ImageFilesComparator())
+            .sorted(ImageFilesComparator.createInstance())
             .skip(pageNumber * pageSize)
             .limit(pageSize)
             .collect(Collectors.toList());
