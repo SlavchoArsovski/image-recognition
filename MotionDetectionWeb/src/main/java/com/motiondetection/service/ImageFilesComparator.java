@@ -13,7 +13,7 @@ public class ImageFilesComparator implements Comparator<File> {
     return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
   }
 
-  public static ImageFilesComparator createInstance() {
+  public static ImageFilesComparator createImageFileComparatorInstance() {
     return new ImageFilesComparator();
   }
 }
