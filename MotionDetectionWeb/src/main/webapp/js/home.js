@@ -180,7 +180,7 @@ $(document).ready(function() {
     filterChange();
   });
 
-  $('.image-view-container').on('scroll', function(event) {
+  $(guiComponents.imageViewContainer).on('scroll', function(event) {
 
     if($(this).scrollTop() + $(this).innerHeight() + 1 >= $(this)[0].scrollHeight) {
       if (state.pageNumber < state.numberOfPages) {

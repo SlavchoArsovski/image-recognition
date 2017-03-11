@@ -24,8 +24,8 @@ public interface MotionDetectionService {
   /**
    * Retrieve stored images according to the given search.
    *
-   * @return {@link StoredImagesDto} containing the last 10 imaged as encoded strings.
    * @param imageSearchDto contains search parameters.
+   * @return {@link StoredImagesDto} containing the images as encoded strings that fulfill the search criteria.
    */
   StoredImagesDto getStoredImages(ImageSearchDto imageSearchDto);
 
